@@ -1,0 +1,12 @@
+{
+  "name": "semana-03",
+  "version": "1.0.0",
+  "description": "Primer servidor HTTP nativo con Node.js",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Gaston",
+  "license": "ISC"
+}

@@ -1,0 +1,15 @@
+{
+  "name": "ejercicio-1",
+  "version": "1.0.0",
+  "description": "Chequeo de números primos aplicado a IDs de productos. Exporta CommonJS, importa ES Modules.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  },
+  "author": "Gaston",
+  "license": "ISC"
+}

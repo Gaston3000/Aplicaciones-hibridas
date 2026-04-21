@@ -1,0 +1,7 @@
+[
+    { "id": 1, "nombre": "Detergente",   "precio": 1500 },
+    { "id": 2, "nombre": "Lavandina",    "precio": 800  },
+    { "id": 3, "nombre": "Esponjas",     "precio": 450  },
+    { "id": 4, "nombre": "Trapo de piso","precio": 1200 },
+    { "id": 5, "nombre": "Cera líquida", "precio": 2400 }
+]
