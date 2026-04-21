@@ -1,5 +1,5 @@
-// Parte 1: Callbacks
-// Tres tareas asincrónicas simuladas con setTimeout sobre productos.
+// Parte 1 - Callbacks
+// 3 tareas async con setTimeout (producto)
 
 function task1(callback) {
     setTimeout(() => {
@@ -27,6 +27,7 @@ function task3(producto, callback) {
 }
 
 function mainCallback() {
+    console.log('arranca la cadena de callbacks...');
     task1((err, producto) => {
         if (err) return console.error('Error en task1:', err);
         task2(producto, (err, productoConDescuento) => {
@@ -40,3 +41,4 @@ function mainCallback() {
 }
 
 mainCallback();
+

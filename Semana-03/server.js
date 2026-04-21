@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = 3000;
 
+// datos del alumno
 const ALUMNO = 'Gastón Costabella';
 const COMISION = 'Aplicaciones Híbridas';
 
@@ -66,4 +67,5 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, () => {
     console.log(`Servidor HTTP escuchando en http://localhost:${PORT}`);
+    console.log('Probar en: /alumno, /info, /static, /productos');
 });

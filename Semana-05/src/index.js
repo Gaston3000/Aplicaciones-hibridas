@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import productoRoutes from './routes/productoRoutes.js';
 import categoriaRoutes from './routes/categoriaRoutes.js';
+// TODO: conectar a mongo cuando veamos la clase de DB
 
 const app = express();
 const PORT = process.env.PORT || 3000;

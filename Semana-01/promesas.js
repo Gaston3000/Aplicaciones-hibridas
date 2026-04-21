@@ -1,5 +1,6 @@
-// Parte 2: Promesas
-// Las mismas tareas convertidas a promesas, ejecutadas en paralelo con Promise.all.
+// Parte 2 - Promesas
+// mismas tareas pero devolviendo promesas. Las lanzo todas juntas con Promise.all
+// (no dependen entre si asi que no tiene sentido hacerlas una atras de otra)
 
 function task1() {
     return new Promise((resolve) => {

@@ -1,5 +1,5 @@
-// Parte 3: Async / Await con manejo de errores
-// Llama a las tareas en secuencia usando await.
+// Parte 3 - async/await con try/catch
+// mismo flujo que los callbacks pero con await (queda mas limpio)
 
 function task1() {
     return new Promise((resolve) => {
