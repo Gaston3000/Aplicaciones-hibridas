@@ -1,0 +1,76 @@
+.app {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 56px 80px;
+}
+
+/* header */
+.header {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 48px;
+}
+.header h1 {
+  font-size: 48px;
+  font-weight: 700;
+  margin: 0;
+}
+.header p {
+  font-size: 18px;
+  color: #6b6b6b;
+  margin: 0 0 6px;
+}
+
+/* catalogo */
+.catalogo h2 {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 32px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+/* tarjeta */
+.tarjeta {
+  border: 1px solid #1a1a1a;
+  padding: 24px;
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.tarjeta .info h3 {
+  margin: 0 0 4px;
+  font-size: 20px;
+}
+.tarjeta .info p {
+  margin: 0;
+  font-size: 14px;
+  color: #6b6b6b;
+}
+.tarjeta button {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  cursor: pointer;
+  text-align: left;
+  align-self: flex-start;
+  font-family: inherit;
+}
+
+/* footer */
+.footer {
+  margin-top: 56px;
+  font-size: 12px;
+  color: #6b6b6b;
+}
+.footer p {
+  margin: 0;
+}
