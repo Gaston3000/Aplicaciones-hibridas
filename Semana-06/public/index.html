@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Limpieza Total</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        background: #F5EFE3;
+        color: #1a1a1a;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 56px 24px;
+      }
+      h1 { margin: 0 0 8px; }
+      p.sub { color: #6b6b6b; margin: 0 0 32px; }
+      code {
+        background: #fff;
+        border: 1px solid #ddd;
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+      li { margin-bottom: 8px; }
+      .metodo { font-weight: 700; }
+    </style>
+  </head>
+  <body>
+    <h1>API Limpieza Total</h1>
+    <p class="sub">Backend de productos de limpieza con usuarios, login y JWT.</p>
+
+    <h2>Endpoints</h2>
+    <ul>
+      <li><span class="metodo">POST</span> <code>/api/usuarios/registro</code> — crear usuario</li>
+      <li><span class="metodo">POST</span> <code>/api/usuarios/login</code> — iniciar sesion (devuelve token)</li>
+      <li><span class="metodo">GET</span> <code>/api/productos</code> — listar productos</li>
+      <li><span class="metodo">GET</span> <code>/api/productos/:id</code> — ver un producto</li>
+      <li><span class="metodo">GET</span> <code>/api/categorias</code> — listar categorias</li>
+    </ul>
+
+    <p>Las rutas de escritura (POST/PUT/DELETE de productos y categorias) requieren el token en el header <code>Authorization: Bearer &lt;token&gt;</code>.</p>
+  </body>
+</html>
