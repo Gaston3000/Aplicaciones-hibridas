@@ -10,7 +10,10 @@ Todo lo hice sobre el rubro limpieza (productos).
 - Semana-03: Primer servidor con Node (http nativo)
 - Semana-04: Servidor con Express.js (peliculas + productos)
 - Semana-05: Estructura MVC (productos + categorias)
+- Semana-06: API con MongoDB, usuarios, login y JWT
 - Semana-07: Home en React (catálogo de productos)
+- Semana-08: Formulario de registro en React (conectado a la API)
+- Semana-09: Rutas con React Router + Login + Detalle
 
 ## Como correr
 
