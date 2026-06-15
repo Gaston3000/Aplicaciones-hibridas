@@ -11,7 +11,9 @@ const productoSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    categoria: { type: String, trim: true }
+    categoria: { type: String, trim: true },
+    imagen: { type: String, trim: true },
+    descripcion: { type: String, trim: true }
 }, { timestamps: true });
 
 export default mongoose.model('Producto', productoSchema);

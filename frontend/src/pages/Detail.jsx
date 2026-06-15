@@ -5,32 +5,61 @@ import { getProducto } from "../services/api";
 function Detail() {
   // tomo el id de la URL (/producto/:id)
   const { id } = useParams();
-  const [producto, setProducto] = useState(null);
+  const [estadio, setEstadio] = useState(null);
   const [cargando, setCargando] = useState(true);
+  const [sinFoto, setSinFoto] = useState(false);
+  const [agregado, setAgregado] = useState(false);
 
   useEffect(() => {
     getProducto(id)
-      .then((data) => setProducto(data))
+      .then((data) => setEstadio(data))
       .finally(() => setCargando(false));
   }, [id]);
 
   if (cargando) return <p className="cargando">Cargando...</p>;
-  if (!producto || producto.error) {
+  if (!estadio || estadio.error) {
     return (
-      <section className="detalle">
-        <p>No se encontró el producto.</p>
-        <Link to="/">← Volver al inicio</Link>
+      <section className="detalle-vacio">
+        <p>No se encontró la sede.</p>
+        <Link to="/" className="btn-ghost">← Volver al inicio</Link>
       </section>
     );
   }
 
+  const agregar = () => {
+    setAgregado(true);
+    setTimeout(() => setAgregado(false), 1600);
+  };
+
   return (
     <section className="detalle">
-      <h2>{producto.nombre}</h2>
-      <p><strong>Marca:</strong> {producto.marca}</p>
-      <p><strong>Precio:</strong> ${producto.precio}</p>
-      <p><strong>Categoría:</strong> {producto.categoria}</p>
-      <Link to="/">← Volver al inicio</Link>
+      <Link to="/" className="detalle-back">← Volver a las sedes</Link>
+
+      <div className="detalle-grid">
+        <div className="detalle-media">
+          {!sinFoto && (
+            <img src={estadio.imagen} alt={estadio.nombre} onError={() => setSinFoto(true)} />
+          )}
+          {sinFoto && <span className="detalle-media-fallback">{estadio.nombre}</span>}
+          <span className="card-badge">{estadio.categoria}</span>
+        </div>
+
+        <div className="detalle-info">
+          <span className="detalle-city">{estadio.marca}</span>
+          <h2 className="detalle-title">{estadio.nombre}</h2>
+          <p className="detalle-desc">{estadio.descripcion}</p>
+
+          <div className="detalle-price-row">
+            <div>
+              <span className="detalle-price-label">Precio de la sede</span>
+              <span className="detalle-price">${estadio.precio.toLocaleString("es-AR")}</span>
+            </div>
+            <button className={`btn-primary ${agregado ? "ok" : ""}`} onClick={agregar}>
+              {agregado ? "Agregado ✓" : "Agregar al carrito"}
+            </button>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

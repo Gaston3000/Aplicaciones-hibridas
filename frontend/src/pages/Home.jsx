@@ -1,38 +1,58 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { getProductos } from "../services/api";
+import TarjetaEstadio from "../components/TarjetaEstadio";
 
 function Home() {
-  const [productos, setProductos] = useState([]);
+  const [estadios, setEstadios] = useState([]);
   const [cargando, setCargando] = useState(true);
 
-  // al montar el componente traigo los productos del backend
+  // al montar el componente traigo las sedes del backend
   useEffect(() => {
     getProductos()
-      .then((data) => setProductos(data))
-      .catch(() => setProductos([]))
+      .then((data) => setEstadios(data))
+      .catch(() => setEstadios([]))
       .finally(() => setCargando(false));
   }, []);
 
-  if (cargando) return <p className="cargando">Cargando productos...</p>;
-
   return (
-    <section className="catalogo">
-      <h2>Catálogo de productos</h2>
-      {productos.length === 0 ? (
-        <p>No hay productos para mostrar. ¿Está prendido el backend?</p>
-      ) : (
-        <div className="grid">
-          {productos.map((p) => (
-            <Link key={p._id} to={`/producto/${p._id}`} className="tarjeta">
-              <h3>{p.nombre}</h3>
-              <p>{p.marca} · ${p.precio}</p>
-              <span className="ver">Ver detalle →</span>
-            </Link>
-          ))}
+    <>
+      <section className="hero">
+        <span className="hero-kicker">FIFA World Cup 26 · Sedes oficiales · USA</span>
+        <h1 className="hero-title">
+          Reservá los estadios más
+          <br />
+          <em>icónicos</em> del Mundial 2026
+        </h1>
+        <p className="hero-sub">
+          Una colección exclusiva de sedes legendarias. Exploralas, viví el detalle
+          y sumalas a tu experiencia mundialista.
+        </p>
+        <div className="hero-cta">
+          <a href="#sedes" className="btn-primary">Explorar sedes</a>
+          <span className="hero-count">04 sedes disponibles</span>
         </div>
-      )}
-    </section>
+        <div className="hero-glow" aria-hidden="true"></div>
+      </section>
+
+      <section className="catalogo" id="sedes">
+        <div className="catalogo-head">
+          <h2>Sedes disponibles</h2>
+          <p>Estados Unidos · Mundial 2026</p>
+        </div>
+
+        {cargando ? (
+          <p className="cargando">Cargando sedes...</p>
+        ) : estadios.length === 0 ? (
+          <p className="cargando">No hay sedes para mostrar. ¿Está prendido el backend?</p>
+        ) : (
+          <div className="grid">
+            {estadios.map((estadio, i) => (
+              <TarjetaEstadio key={estadio._id} estadio={estadio} index={i} />
+            ))}
+          </div>
+        )}
+      </section>
+    </>
   );
 }
 
