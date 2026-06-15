@@ -3,14 +3,7 @@ import { Link } from "react-router-dom";
 
 // Tarjeta de una sede (estadio). Recibe el estadio por props.
 function TarjetaEstadio({ estadio, index = 0 }) {
-  const [agregado, setAgregado] = useState(false);
   const [sinFoto, setSinFoto] = useState(false);
-
-  // feedback visual al "agregar" (el carrito real no es parte de esta entrega)
-  const agregar = () => {
-    setAgregado(true);
-    setTimeout(() => setAgregado(false), 1400);
-  };
 
   return (
     <article className="card" style={{ animationDelay: `${index * 90}ms` }}>
@@ -29,12 +22,8 @@ function TarjetaEstadio({ estadio, index = 0 }) {
 
         <div className="card-foot">
           <span className="card-price">${estadio.precio.toLocaleString("es-AR")}</span>
-          <button className={`btn-add ${agregado ? "ok" : ""}`} onClick={agregar}>
-            {agregado ? "Agregado ✓" : "Agregar"}
-          </button>
+          <Link to={`/producto/${estadio._id}`} className="btn-add">Ver</Link>
         </div>
-
-        <Link to={`/producto/${estadio._id}`} className="card-link">Ver sede →</Link>
       </div>
     </article>
   );
