@@ -7,6 +7,7 @@ function Navbar() {
 
   return (
     <header className="navbar">
+      <div className="navbar-inner">
       <Link to="/" className="brand">
         {/* LOGO OFICIAL: poné el archivo en  frontend/public/logo-mundial.png */}
         {logoError ? (
@@ -26,6 +27,7 @@ function Navbar() {
         <NavLink to="/registro">Registro</NavLink>
         <NavLink to="/login">Ingresar</NavLink>
       </nav>
+      </div>
     </header>
   );
 }
