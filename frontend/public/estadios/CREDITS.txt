@@ -1,0 +1,12 @@
+Créditos de las imágenes de los estadios
+========================================
+
+Fotos obtenidas de Wikimedia Commons (licencias libres Creative Commons),
+usadas con fines académicos para la materia Aplicaciones Híbridas.
+
+- new-york.jpg     -> MetLife Stadium (vista aérea) — Wikimedia Commons
+- dallas.jpg       -> AT&T Stadium, Arlington — Wikimedia Commons
+- los-angeles.jpg  -> SoFi Stadium — Wikimedia Commons
+- miami.jpg        -> Hard Rock Stadium — Wikimedia Commons
+
+Fuente: https://commons.wikimedia.org

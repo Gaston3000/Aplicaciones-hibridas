@@ -11,7 +11,7 @@ export const seedProductos = async () => {
             nombre: 'New York New Jersey Stadium',
             marca: 'Nueva York / Nueva Jersey',
             categoria: 'Sede de la Final',
-            precio: 14500000,
+            precio: 1250000000,
             imagen: '/estadios/new-york.jpg',
             descripcion: 'Sede premium del Mundial 2026, pensada para noches históricas, finales inolvidables y eventos de escala mundial.'
         },
@@ -19,7 +19,7 @@ export const seedProductos = async () => {
             nombre: 'Dallas Stadium',
             marca: 'Dallas, Texas',
             categoria: 'Sede Premium',
-            precio: 11800000,
+            precio: 890000000,
             imagen: '/estadios/dallas.jpg',
             descripcion: 'Un estadio imponente, moderno y preparado para recibir partidos masivos con una experiencia visual de alto impacto.'
         },
@@ -27,7 +27,7 @@ export const seedProductos = async () => {
             nombre: 'Los Angeles Stadium',
             marca: 'Los Ángeles, California',
             categoria: 'Sede Tecnológica',
-            precio: 13200000,
+            precio: 1100000000,
             imagen: '/estadios/los-angeles.jpg',
             descripcion: 'Una sede cinematográfica, tecnológica y elegante, ideal para vivir el Mundial con una estética moderna y global.'
         },
@@ -35,7 +35,7 @@ export const seedProductos = async () => {
             nombre: 'Miami Stadium',
             marca: 'Miami, Florida',
             categoria: 'Sede Exclusiva',
-            precio: 12600000,
+            precio: 760000000,
             imagen: '/estadios/miami.jpg',
             descripcion: 'Una sede vibrante, cálida y exclusiva, con energía internacional y una experiencia mundialista única.'
         }
