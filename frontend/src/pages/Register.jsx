@@ -21,14 +21,14 @@ function Register() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setMensaje(null);
+    e.preventDefault(); // que no se recargue la página al enviar
+    setMensaje(null); // borro mensajes viejos
 
-    const nuevos = validar();
+    const nuevos = validar(); // ¿hay errores?
     setErrores(nuevos);
     if (Object.keys(nuevos).length > 0) return;
 
-    const data = await registrarUsuario(form);
+    const data = await registrarUsuario(form); // mando los datos a la API
     if (data.error) {
       setMensaje({ tipo: "error", texto: data.error });
       return;

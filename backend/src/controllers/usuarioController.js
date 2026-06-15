@@ -49,7 +49,7 @@ export const login = async (req, res) => {
 
         const token = jwt.sign(
             { id: usuario._id, email: usuario.email },
-            process.env.JWT_SECRET,
+            process.env.JWT_SECRET || 'secreto_demo_limpieza_total',
             { expiresIn: '2h' }
         );
 

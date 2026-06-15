@@ -10,7 +10,7 @@ export const verificarToken = (req, res, next) => {
 
     const token = header.split(' ')[1];
     try {
-        const datos = jwt.verify(token, process.env.JWT_SECRET);
+        const datos = jwt.verify(token, process.env.JWT_SECRET || 'secreto_demo_limpieza_total');
         req.usuario = datos;
         next();
     } catch (error) {
