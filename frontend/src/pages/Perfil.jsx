@@ -22,7 +22,7 @@ function Perfil() {
         <div>
           <dt>Rol</dt>
           <dd>
-            <span className={`etiqueta-rol ${esAdmin ? "admin" : ""}`}>{usuario?.rol}</span>
+            <span className={`etiqueta-rol ${esAdmin ? "es-admin" : ""}`}>{usuario?.rol}</span>
           </dd>
         </div>
         <div>

@@ -52,7 +52,7 @@ function AdminLayout() {
 
           <div className="admin-header-usuario">
             <span className="admin-header-nombre">{usuario?.nombre}</span>
-            <span className="etiqueta-rol admin">{usuario?.rol}</span>
+            <span className="etiqueta-rol es-admin">{usuario?.rol}</span>
           </div>
 
           <button type="button" className="btn-ghost btn-chico" onClick={salir}>

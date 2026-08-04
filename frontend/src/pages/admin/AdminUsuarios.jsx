@@ -45,7 +45,7 @@ function AdminUsuarios() {
       clave: "rol",
       titulo: "Rol",
       render: (fila) => (
-        <span className={`etiqueta-rol ${fila.rol === "admin" ? "admin" : ""}`}>{fila.rol}</span>
+        <span className={`etiqueta-rol ${fila.rol === "admin" ? "es-admin" : ""}`}>{fila.rol}</span>
       ),
     },
     { clave: "createdAt", titulo: "Registrado", render: (fila) => formatearFecha(fila.createdAt) },

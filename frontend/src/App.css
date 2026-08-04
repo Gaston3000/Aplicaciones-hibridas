@@ -870,7 +870,9 @@
   border: 1px solid var(--line);
   border-radius: 999px;
 }
-.etiqueta-rol.admin {
+/* Se llama "es-admin" y no "admin" a propósito: ".admin" es la clase del
+   contenedor del BackOffice y pisaría el estilo de esta etiqueta. */
+.etiqueta-rol.es-admin {
   color: var(--pink);
   background: var(--pink-soft);
   border-color: rgba(255, 46, 126, 0.3);
