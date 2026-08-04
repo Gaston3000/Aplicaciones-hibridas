@@ -8,7 +8,7 @@ import ErrorMessage from "../../components/ErrorMessage";
 
 const VACIO = { nombre: "", descripcion: "", activo: true };
 
-// Misma página para crear y para editar categorías.
+// La misma pantalla sirve para crear y para editar categorías.
 function AdminCategoriaForm() {
   const { id } = useParams();
   const esEdicion = Boolean(id);
@@ -17,7 +17,7 @@ function AdminCategoriaForm() {
   const [guardando, setGuardando] = useState(false);
   const [errorGuardar, setErrorGuardar] = useState(null);
 
-  // Si es un alta no hay nada que traer de la API.
+  // Si es un alta no hay nada que ir a buscar.
   const consulta = useCallback(
     async () => (esEdicion ? getCategoria(id) : null),
     [id, esEdicion]

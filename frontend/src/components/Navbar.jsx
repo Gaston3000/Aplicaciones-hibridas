@@ -2,10 +2,10 @@ import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
-// Barra de navegación pública. Cambia según el estado de la sesión:
-// visitante / usuario común / administrador.
+// La barra de arriba. Cambia según quién esté mirando:
+// visitante, usuario común o admin.
 function Navbar() {
-  // Si el logo oficial no está cargado todavía, muestro un texto como respaldo.
+  // Si todavía no puse el logo, muestro el texto y listo.
   const [logoError, setLogoError] = useState(false);
   const [menuAbierto, setMenuAbierto] = useState(false);
   const { estaAutenticado, esAdmin, usuario, cerrarSesion } = useAuth();

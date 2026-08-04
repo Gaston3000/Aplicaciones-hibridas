@@ -1,8 +1,8 @@
-// Tabla reutilizable del BackOffice.
+// La tabla que usan las tres pantallas del panel.
 //
-// columnas: [{ clave, titulo, render? }]  -> render(fila) permite dar formato
-// datos:    array de objetos con _id
-// acciones: función que recibe la fila y devuelve los botones de esa fila
+// columnas: [{ clave, titulo, render? }] -> con render(fila) le doy formato
+// datos:    el array de objetos, cada uno con su _id
+// acciones: una función que recibe la fila y devuelve los botones de esa fila
 function AdminTable({ columnas, datos, acciones }) {
   return (
     <div className="tabla-scroll">

@@ -8,10 +8,9 @@ import Loading from "../components/Loading";
 import ErrorMessage from "../components/ErrorMessage";
 import EmptyState from "../components/EmptyState";
 
-// Página de inicio del FrontOffice.
-// Trae las sedes y las categorías reales de la API (nada está escrito a mano).
+// La home. Las sedes y las categorías salen de la API, no hay nada hardcodeado.
 function Home() {
-  // Las dos consultas van juntas para no esperar una atrás de la otra.
+  // Las dos consultas van juntas con Promise.all, si no una espera a la otra al pedo.
   const consulta = useCallback(async () => {
     const [estadios, categorias] = await Promise.all([getEstadios(), getCategorias()]);
     return { estadios, categorias };
@@ -22,7 +21,8 @@ function Home() {
   const estadios = datos?.estadios ?? [];
   const categorias = datos?.categorias ?? [];
 
-  // El contador sale del largo real de la lista, con dos dígitos (04, 12...).
+  // El contador sale del largo real de la lista. El padStart es para que
+  // quede "04" en vez de "4", como estaba en el diseño original.
   const cantidad = String(estadios.length).padStart(2, "0");
 
   return (

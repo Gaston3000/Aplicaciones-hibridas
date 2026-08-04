@@ -1,6 +1,6 @@
 import { request } from './api';
 
-// Llamadas al recurso /api/categorias.
+// Todo lo que le pido a /api/categorias.
 
 export const getCategorias = () => request('/api/categorias');
 

@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
-// Se muestra cuando un usuario logueado, pero sin rol admin,
-// intenta entrar al BackOffice.
+// Cuando alguien logueado pero sin rol admin quiere meterse en el panel.
 function AccesoDenegado() {
   const { usuario } = useAuth();
 

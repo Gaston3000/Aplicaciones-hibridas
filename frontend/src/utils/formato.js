@@ -1,19 +1,19 @@
-// Funciones chicas de formato que se usan en varias pantallas.
+// Un par de funciones de formato que uso en varias pantallas.
 
-// Muestra el precio como moneda. Si el dato no es un número devuelve un guion,
-// así ninguna pantalla se rompe cuando falta el valor.
+// Muestra el precio como plata. Si no viene un número devuelve un guion,
+// así no se rompe la pantalla cuando falta el dato.
 export const formatearPrecio = (valor) => {
     if (typeof valor !== 'number' || Number.isNaN(valor)) return '—';
     return `$${valor.toLocaleString('es-AR')}`;
 };
 
-// Muestra la capacidad con separador de miles.
+// Lo mismo pero para la capacidad, con el punto de miles.
 export const formatearNumero = (valor) => {
     if (typeof valor !== 'number' || Number.isNaN(valor)) return '—';
     return valor.toLocaleString('es-AR');
 };
 
-// Fecha corta (dd/mm/aaaa) para las tablas del BackOffice.
+// Fecha cortita (dd/mm/aaaa) para las tablas del panel.
 export const formatearFecha = (fechaISO) => {
     if (!fechaISO) return '—';
     const fecha = new Date(fechaISO);

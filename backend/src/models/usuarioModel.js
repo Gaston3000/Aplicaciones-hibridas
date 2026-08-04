@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 
-// Modelo Usuario: es la entidad de autenticación de la aplicación.
-// La contraseña se guarda siempre hasheada con bcrypt (ver usuarioController).
-// Con "select: false" la password NO viaja nunca en las consultas normales:
-// para el login hay que pedirla explícitamente con .select('+password').
+// El usuario es con lo que manejo el login de la app.
+// La password se guarda siempre hasheada con bcrypt (eso pasa en el controller).
+// El select:false hace que la password no salga nunca en las consultas normales:
+// si la necesito para el login la tengo que pedir a mano con .select('+password').
 const usuarioSchema = new mongoose.Schema(
     {
         nombre: {

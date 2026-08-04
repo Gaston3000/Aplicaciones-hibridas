@@ -1,5 +1,5 @@
 import { createContext } from 'react';
 
-// Contexto global de autenticación.
-// El valor real lo provee AuthProvider y se consume con el hook useAuth().
+// El contexto donde vive la sesión.
+// El valor lo pone AuthProvider y se lee con el hook useAuth().
 export const AuthContext = createContext(null);

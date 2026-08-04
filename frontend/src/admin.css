@@ -1,8 +1,6 @@
-/* ===========================================================================
-   BackOffice (panel de administración).
-   Usa los mismos colores y tipografías del sitio público (index.css),
-   pero con un aspecto más práctico: menú lateral, tablas y formularios.
-   =========================================================================== */
+/* Los estilos del panel de administración.
+   Uso los mismos colores y tipografías del sitio público (salen de index.css),
+   pero con una pinta más de herramienta: menú al costado, tablas y formularios. */
 
 .admin {
   display: flex;
@@ -89,7 +87,7 @@
 /* ===== CONTENIDO ===== */
 .admin-contenido {
   flex: 1;
-  min-width: 0; /* evita que las tablas anchas desborden el layout */
+  min-width: 0; /* sin esto una tabla ancha te rompe todo el layout */
   margin-left: 250px;
 }
 .admin-header {
@@ -228,7 +226,7 @@
 
 /* ===== TABLA ===== */
 .tabla-scroll {
-  /* Las tablas anchas scrollean solas, sin romper el ancho de la página */
+  /* Si la tabla no entra, scrollea ella sola y no la página entera */
   overflow-x: auto;
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -365,7 +363,9 @@
   }
 }
 
-/* En pantallas chicas la tabla se muestra como tarjetas apiladas */
+/* En pantallas chicas la tabla no entra ni a palos, así que la doy vuelta:
+   cada fila pasa a ser una tarjeta y el título de la columna va al costado
+   (eso sale del data-titulo que pongo en el AdminTable) */
 @media (max-width: 640px) {
   .tabla-scroll {
     border: none;

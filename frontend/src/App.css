@@ -165,9 +165,9 @@
 .btn-primary.ok {
   background: linear-gradient(135deg, #7afcb6, var(--green));
 }
-/* Se usa tanto en <a> como en <button>. El "background: transparent" y la
-   tipografía son necesarios porque el navegador le pone a los <button> un
-   fondo gris claro y su propia fuente por defecto. */
+/* Lo uso tanto en <a> como en <button>. El background y la tipografía van sí o
+   sí: el navegador a los <button> les mete un fondo gris claro y su propia
+   fuente, y con el texto claro que tiene no se leía nada. */
 .btn-ghost {
   display: inline-block;
   padding: 12px 24px;
@@ -650,7 +650,7 @@
   border-color: var(--muted);
 }
 
-/* Botón hamburguesa (solo en celular) */
+/* La hamburguesa, que solo se ve en celular */
 .nav-toggle {
   display: none;
   flex-direction: column;
@@ -877,8 +877,9 @@
   border: 1px solid var(--line);
   border-radius: 999px;
 }
-/* Se llama "es-admin" y no "admin" a propósito: ".admin" es la clase del
-   contenedor del BackOffice y pisaría el estilo de esta etiqueta. */
+/* Ojo: va "es-admin" y no "admin" a propósito. ".admin" es el contenedor del
+   panel y le mete un min-height de 100vh, así que la etiqueta se estiraba a
+   toda la pantalla. Ya me pasó una vez, no lo cambies. */
 .etiqueta-rol.es-admin {
   color: var(--pink);
   background: var(--pink-soft);
@@ -1111,7 +1112,7 @@
   .detalle-media { min-height: 280px; }
   .hero { padding: 64px 0 56px; }
 
-  /* El menú pasa a ser desplegable con el botón hamburguesa */
+  /* En celular el menú se esconde y se abre con la hamburguesa */
   .nav-toggle { display: flex; }
   .nav-links {
     display: none;

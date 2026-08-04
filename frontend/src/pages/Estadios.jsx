@@ -8,8 +8,9 @@ import Loading from "../components/Loading";
 import ErrorMessage from "../components/ErrorMessage";
 import EmptyState from "../components/EmptyState";
 
-// Listado completo de sedes, con filtro por categoría.
-// La categoría elegida queda en la URL (?categoria=...) para poder compartir el link.
+// El listado completo con el filtro por categoría.
+// La categoría queda en la URL (?categoria=...) así podés compartir el link
+// y el filtro se mantiene si recargás.
 function Estadios() {
   const [parametros, setParametros] = useSearchParams();
   const categoriaElegida = parametros.get("categoria") || "";

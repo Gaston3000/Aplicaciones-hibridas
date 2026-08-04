@@ -2,8 +2,8 @@ import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
-// Estructura común del FrontOffice (parte pública): navbar arriba,
-// la página en el medio y el footer abajo.
+// El molde de la parte pública: la navbar arriba, la página en el medio
+// y el footer abajo. Lo que cambia entra por el Outlet.
 function LayoutPublico() {
   return (
     <>

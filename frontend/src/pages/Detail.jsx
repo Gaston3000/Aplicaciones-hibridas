@@ -6,7 +6,7 @@ import { formatearPrecio, formatearNumero } from "../utils/formato";
 import Loading from "../components/Loading";
 import ErrorMessage from "../components/ErrorMessage";
 
-// Ficha completa de una sede. El id viene de la URL: /estadios/:id
+// La ficha de una sede. El id lo saco de la URL con useParams: /estadios/:id
 function Detail() {
   const { id } = useParams();
   const [sinFoto, setSinFoto] = useState(false);
@@ -16,7 +16,7 @@ function Detail() {
 
   if (cargando) return <Loading texto="Cargando la sede..." />;
 
-  // Si el id no existe o tiene un formato inválido, la API responde 404 / 400.
+  // Si el id no existe la API tira 404, y si está mal escrito 400. Los dos caen acá.
   if (error || !estadio) {
     return (
       <section className="detalle-vacio">

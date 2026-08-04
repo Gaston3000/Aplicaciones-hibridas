@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Input from "../Input";
 
-// Formulario de alta y edición de usuarios.
-// En la edición la contraseña es opcional: si se deja vacía, no se cambia.
-// La contraseña actual nunca se muestra (el backend no la devuelve).
+// El formulario para cargar y editar usuarios.
+// Cuando edito, la contraseña es opcional: si la dejo vacía queda la que estaba.
+// La contraseña actual no se muestra nunca, el backend directamente no la manda.
 function FormularioUsuario({ valoresIniciales, esEdicion, onGuardar, onCancelar, guardando }) {
   const [form, setForm] = useState(valoresIniciales);
   const [errores, setErrores] = useState({});
@@ -18,7 +18,7 @@ function FormularioUsuario({ valoresIniciales, esEdicion, onGuardar, onCancelar,
     if (!form.nombre.trim()) nuevos.nombre = "El nombre es obligatorio";
     if (!form.email.trim().includes("@")) nuevos.email = "Ingresá un email válido";
 
-    // En el alta la contraseña es obligatoria; en la edición, solo si se escribió algo.
+    // En el alta la contraseña va sí o sí; editando, solo si escribieron algo.
     if (!esEdicion && form.password.length < 6) {
       nuevos.password = "Mínimo 6 caracteres";
     } else if (esEdicion && form.password && form.password.length < 6) {
@@ -40,7 +40,7 @@ function FormularioUsuario({ valoresIniciales, esEdicion, onGuardar, onCancelar,
       email: form.email.trim().toLowerCase(),
       rol: form.rol,
     };
-    // Solo mandamos la password si se escribió una nueva.
+    // La password la mando solo si pusieron una nueva.
     if (form.password) datos.password = form.password;
 
     onGuardar(datos);

@@ -1,4 +1,4 @@
-// Indicador de carga reutilizable.
+// El cartelito de "cargando" que uso en todos lados.
 function Loading({ texto = 'Cargando...' }) {
     return (
         <div className="estado-carga" role="status">

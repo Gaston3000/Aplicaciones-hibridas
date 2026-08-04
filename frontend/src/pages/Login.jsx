@@ -13,15 +13,15 @@ function Login() {
   const navigate = useNavigate();
   const ubicacion = useLocation();
 
-  // Si PrivateRoute nos mandó acá, volvemos a la página que se quería abrir.
+  // Si PrivateRoute me trajo acá, me guardó a dónde querías ir para volver después.
   const destino = ubicacion.state?.desde || "/";
 
-  // Si ya está logueado, no tiene sentido quedarse en el login.
+  // Si ya está logueado no tiene sentido dejarlo en el login.
   useEffect(() => {
     if (estaAutenticado) navigate(destino, { replace: true });
   }, [estaAutenticado, destino, navigate]);
 
-  // El aviso puede venir del formulario o de una sesión que expiró.
+  // El aviso puede ser del formulario o de una sesión que se venció.
   const avisoVisible =
     mensaje || (mensajeSesion ? { tipo: "error", texto: mensajeSesion } : null);
 
@@ -48,9 +48,9 @@ function Login() {
 
     setEnviando(true);
     try {
-      // El contexto guarda el token y el usuario, y actualiza toda la app.
+      // El contexto guarda el token y el usuario y actualiza toda la app de una.
       const usuario = await iniciarSesion(form.email, form.password);
-      // Al admin lo mandamos directo al panel; al resto, a donde quería ir.
+      // Al admin lo mando derecho al panel; al resto, a donde quería entrar.
       navigate(usuario.rol === "admin" ? "/admin" : destino, { replace: true });
     } catch (error) {
       setMensaje({ tipo: "error", texto: error.message });

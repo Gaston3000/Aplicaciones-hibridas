@@ -1,7 +1,7 @@
 import { request } from './api';
 
-// Llamadas al recurso /api/usuarios que usa el BackOffice.
-// Todas requieren token de administrador.
+// Lo que usa el panel para manejar usuarios.
+// Todas piden token de admin.
 
 export const getUsuarios = () => request('/api/usuarios', { auth: true });
 

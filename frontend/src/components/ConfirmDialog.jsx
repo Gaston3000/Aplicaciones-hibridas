@@ -1,4 +1,4 @@
-// Cartel de confirmación para las acciones que no se pueden deshacer (eliminar).
+// El "¿estás seguro?" antes de borrar algo, que no tiene vuelta atrás.
 function ConfirmDialog({ abierto, titulo, mensaje, onConfirmar, onCancelar, procesando = false }) {
     if (!abierto) return null;
 

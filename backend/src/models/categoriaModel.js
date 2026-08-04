@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
-// Modelo Categoría: agrupa a los estadios (por ejemplo "Sede de la Final").
-// El nombre es único para no tener categorías repetidas.
+// Las categorías agrupan a los estadios, por ejemplo "Sede de la Final".
+// El nombre va único así no se repiten.
 const categoriaSchema = new mongoose.Schema(
     {
         nombre: {

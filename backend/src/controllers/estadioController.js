@@ -1,10 +1,8 @@
 import Estadio from '../models/estadioModel.js';
 import Categoria from '../models/categoriaModel.js';
 
-// ---------------------------------------------------------------------------
 // GET /api/estadios  (público)
-// Acepta ?categoria=<id> para filtrar y ?activo=true para ver solo los activos.
-// ---------------------------------------------------------------------------
+// Le puedo pasar ?categoria=<id> para filtrar y ?activo=true para ver solo los activos.
 export const getEstadios = async (req, res, next) => {
     try {
         const filtro = {};
@@ -12,7 +10,8 @@ export const getEstadios = async (req, res, next) => {
         if (req.query.activo === 'true') filtro.activo = true;
         if (req.query.activo === 'false') filtro.activo = false;
 
-        // populate trae el documento completo de la categoría, no solo el id.
+        // El populate cambia el id de la categoría por el documento entero,
+        // así el front puede mostrar el nombre sin pedirlo aparte.
         const estadios = await Estadio.find(filtro)
             .populate('categoria', 'nombre descripcion')
             .sort({ createdAt: 1 });
@@ -23,9 +22,7 @@ export const getEstadios = async (req, res, next) => {
     }
 };
 
-// ---------------------------------------------------------------------------
 // GET /api/estadios/:id  (público)
-// ---------------------------------------------------------------------------
 export const getEstadioById = async (req, res, next) => {
     try {
         const estadio = await Estadio.findById(req.params.id).populate(
@@ -41,9 +38,7 @@ export const getEstadioById = async (req, res, next) => {
     }
 };
 
-// ---------------------------------------------------------------------------
 // POST /api/estadios  (solo admin)
-// ---------------------------------------------------------------------------
 export const postEstadio = async (req, res, next) => {
     try {
         const { nombre, ciudad, precio, categoria } = req.body || {};
@@ -54,7 +49,7 @@ export const postEstadio = async (req, res, next) => {
             });
         }
 
-        // La categoría tiene que existir de verdad en la base.
+        // Me fijo que la categoría exista de verdad, no alcanza con que sea un id válido.
         const categoriaExiste = await Categoria.findById(categoria);
         if (!categoriaExiste) {
             return res.status(400).json({ error: 'La categoría indicada no existe' });
@@ -69,12 +64,10 @@ export const postEstadio = async (req, res, next) => {
     }
 };
 
-// ---------------------------------------------------------------------------
 // PUT /api/estadios/:id  (solo admin)
-// ---------------------------------------------------------------------------
 export const putEstadio = async (req, res, next) => {
     try {
-        // Si mandan una categoría nueva, verificamos que exista.
+        // Si me mandan otra categoría, chequeo que exista igual que en el alta.
         if (req.body?.categoria) {
             const categoriaExiste = await Categoria.findById(req.body.categoria);
             if (!categoriaExiste) {
@@ -82,7 +75,7 @@ export const putEstadio = async (req, res, next) => {
             }
         }
 
-        // runValidators hace que Mongoose valide también en las actualizaciones.
+        // Sin runValidators, Mongoose no valida en los update y se cuela cualquier cosa.
         const actualizado = await Estadio.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
             runValidators: true
@@ -98,9 +91,7 @@ export const putEstadio = async (req, res, next) => {
     }
 };
 
-// ---------------------------------------------------------------------------
 // DELETE /api/estadios/:id  (solo admin)
-// ---------------------------------------------------------------------------
 export const deleteEstadio = async (req, res, next) => {
     try {
         const eliminado = await Estadio.findByIdAndDelete(req.params.id);

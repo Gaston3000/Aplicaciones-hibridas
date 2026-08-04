@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import Usuario from '../models/usuarioModel.js';
 
-// Devuelve el usuario "limpio" para las respuestas de la API (nunca la password).
+// Arma el usuario "limpio" que devuelvo por la API. La password nunca va acá.
 const formatearUsuario = (usuario) => ({
     _id: usuario._id,
     nombre: usuario.nombre,
@@ -12,7 +12,7 @@ const formatearUsuario = (usuario) => ({
     updatedAt: usuario.updatedAt
 });
 
-// Genera el JWT con lo mínimo necesario: id, email y rol.
+// En el token meto solo lo justo: id, email y rol.
 const generarToken = (usuario) =>
     jwt.sign(
         { id: usuario._id, email: usuario.email, rol: usuario.rol },
@@ -20,9 +20,7 @@ const generarToken = (usuario) =>
         { expiresIn: process.env.JWT_EXPIRES_IN || '4h' }
     );
 
-// ---------------------------------------------------------------------------
-// POST /api/usuarios/registro  (público)
-// ---------------------------------------------------------------------------
+// POST /api/usuarios/registro  (lo puede usar cualquiera)
 export const registrar = async (req, res, next) => {
     try {
         const { nombre, email, password } = req.body || {};
@@ -40,11 +38,11 @@ export const registrar = async (req, res, next) => {
             return res.status(409).json({ error: 'El email ya está registrado' });
         }
 
-        // La password se hashea con bcrypt ANTES de guardarla.
+        // Hasheo la password antes de guardarla, nunca en texto plano.
         const hash = await bcrypt.hash(password, 10);
 
-        // El registro público siempre crea usuarios con rol "usuario":
-        // nadie puede convertirse en admin mandando { rol: "admin" } en el body.
+        // Acá siempre creo usuarios comunes: le fuerzo el rol "usuario" para que
+        // nadie se haga admin solo, mandando { rol: "admin" } en el body.
         const usuario = await Usuario.create({
             nombre: String(nombre).trim(),
             email: emailNormalizado,
@@ -58,9 +56,7 @@ export const registrar = async (req, res, next) => {
     }
 };
 
-// ---------------------------------------------------------------------------
-// POST /api/usuarios/login  (público)
-// ---------------------------------------------------------------------------
+// POST /api/usuarios/login  (lo puede usar cualquiera)
 export const login = async (req, res, next) => {
     try {
         const { email, password } = req.body || {};
@@ -69,7 +65,7 @@ export const login = async (req, res, next) => {
             return res.status(400).json({ error: 'email y password son obligatorios' });
         }
 
-        // La password tiene select:false en el modelo, hay que pedirla explícitamente.
+        // Como en el modelo la password tiene select:false, acá la tengo que pedir a mano.
         const usuario = await Usuario.findOne({
             email: String(email).trim().toLowerCase()
         }).select('+password');
@@ -92,10 +88,8 @@ export const login = async (req, res, next) => {
     }
 };
 
-// ---------------------------------------------------------------------------
-// GET /api/usuarios/perfil  (requiere token)
-// Devuelve los datos del usuario que está logueado.
-// ---------------------------------------------------------------------------
+// GET /api/usuarios/perfil  (hay que estar logueado)
+// Devuelve los datos del que está usando la app en ese momento.
 export const getPerfil = async (req, res, next) => {
     try {
         const usuario = await Usuario.findById(req.usuario.id);
@@ -108,9 +102,7 @@ export const getPerfil = async (req, res, next) => {
     }
 };
 
-// ---------------------------------------------------------------------------
 // GET /api/usuarios  (solo admin)
-// ---------------------------------------------------------------------------
 export const getUsuarios = async (req, res, next) => {
     try {
         const usuarios = await Usuario.find().sort({ createdAt: -1 });
@@ -120,9 +112,7 @@ export const getUsuarios = async (req, res, next) => {
     }
 };
 
-// ---------------------------------------------------------------------------
 // GET /api/usuarios/:id  (solo admin)
-// ---------------------------------------------------------------------------
 export const getUsuarioById = async (req, res, next) => {
     try {
         const usuario = await Usuario.findById(req.params.id);
@@ -135,10 +125,8 @@ export const getUsuarioById = async (req, res, next) => {
     }
 };
 
-// ---------------------------------------------------------------------------
 // POST /api/usuarios  (solo admin)
-// Alta de usuarios desde el BackOffice, acá sí se puede elegir el rol.
-// ---------------------------------------------------------------------------
+// Es el alta desde el panel, así que acá sí se puede elegir el rol.
 export const postUsuario = async (req, res, next) => {
     try {
         const { nombre, email, password, rol } = req.body || {};
@@ -169,10 +157,8 @@ export const postUsuario = async (req, res, next) => {
     }
 };
 
-// ---------------------------------------------------------------------------
 // PUT /api/usuarios/:id  (solo admin)
-// La password es opcional: si viene, se vuelve a hashear con bcrypt.
-// ---------------------------------------------------------------------------
+// La password es opcional: si la mandan, la vuelvo a hashear con bcrypt.
 export const putUsuario = async (req, res, next) => {
     try {
         const { nombre, email, password, rol } = req.body || {};
@@ -186,7 +172,7 @@ export const putUsuario = async (req, res, next) => {
 
         if (email !== undefined) {
             const emailNormalizado = String(email).trim().toLowerCase();
-            // Si cambia el email, revisamos que no lo tenga otro usuario.
+            // Si le cambian el mail, me fijo que no lo esté usando otro.
             if (emailNormalizado !== usuario.email) {
                 const existe = await Usuario.findOne({ email: emailNormalizado });
                 if (existe) {
@@ -197,7 +183,7 @@ export const putUsuario = async (req, res, next) => {
         }
 
         if (rol !== undefined) {
-            // Protección: no dejar la aplicación sin ningún administrador.
+            // Cuidado con quedarnos sin ningún admin y no poder entrar más al panel.
             if (usuario.rol === 'admin' && rol !== 'admin') {
                 const admins = await Usuario.countDocuments({ rol: 'admin' });
                 if (admins <= 1) {
@@ -216,7 +202,8 @@ export const putUsuario = async (req, res, next) => {
             usuario.password = await bcrypt.hash(password, 10);
         }
 
-        // save() dispara las validaciones del schema (equivale a runValidators).
+        // Uso save() en vez de findByIdAndUpdate porque así se corren las
+        // validaciones del schema sin tener que acordarme del runValidators.
         await usuario.save();
         res.json(formatearUsuario(usuario));
     } catch (error) {
@@ -224,9 +211,7 @@ export const putUsuario = async (req, res, next) => {
     }
 };
 
-// ---------------------------------------------------------------------------
 // DELETE /api/usuarios/:id  (solo admin)
-// ---------------------------------------------------------------------------
 export const deleteUsuario = async (req, res, next) => {
     try {
         const usuario = await Usuario.findById(req.params.id);
@@ -234,12 +219,12 @@ export const deleteUsuario = async (req, res, next) => {
             return res.status(404).json({ error: 'Usuario no encontrado' });
         }
 
-        // Un admin no puede borrarse a sí mismo (se quedaría sin sesión válida).
+        // Que no se borre a sí mismo, porque se queda sin sesión al toque.
         if (String(usuario._id) === String(req.usuario.id)) {
             return res.status(409).json({ error: 'No podés eliminar tu propio usuario' });
         }
 
-        // Protección: siempre tiene que quedar al menos un administrador.
+        // Misma idea que arriba: tiene que quedar siempre al menos un admin.
         if (usuario.rol === 'admin') {
             const admins = await Usuario.countDocuments({ rol: 'admin' });
             if (admins <= 1) {

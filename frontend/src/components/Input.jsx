@@ -1,5 +1,5 @@
-// Campo de formulario reutilizable.
-// Según "type" dibuja un input normal, un textarea, un select o un checkbox.
+// El campo de formulario que uso en todos lados.
+// Según el "type" dibuja un input común, un textarea, un select o un checkbox.
 // Todo entra por props y los cambios salen por onChange.
 function Input({
   label,
@@ -15,7 +15,7 @@ function Input({
 }) {
   const claseError = error ? "campo con-error" : "campo";
 
-  // Checkbox: la etiqueta va al lado de la casilla.
+  // El checkbox va aparte porque la etiqueta tiene que ir al lado de la casilla.
   if (type === "checkbox") {
     return (
       <div className={`${claseError} campo-check`}>

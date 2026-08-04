@@ -8,7 +8,7 @@ import ErrorMessage from "../../components/ErrorMessage";
 
 const VACIO = { nombre: "", email: "", password: "", rol: "usuario" };
 
-// Misma página para crear y para editar usuarios.
+// La misma pantalla sirve para crear y para editar usuarios.
 function AdminUsuarioForm() {
   const { id } = useParams();
   const esEdicion = Boolean(id);
@@ -17,7 +17,7 @@ function AdminUsuarioForm() {
   const [guardando, setGuardando] = useState(false);
   const [errorGuardar, setErrorGuardar] = useState(null);
 
-  // Si es un alta no hay nada que traer de la API.
+  // Si es un alta no hay nada que ir a buscar.
   const consulta = useCallback(
     async () => (esEdicion ? getUsuario(id) : null),
     [id, esEdicion]
@@ -48,7 +48,7 @@ function AdminUsuarioForm() {
     ? {
         nombre: datos.nombre || "",
         email: datos.email || "",
-        password: "", // la contraseña actual nunca se muestra
+        password: "", // vacío a propósito: la actual no se muestra nunca
         rol: datos.rol || "usuario",
       }
     : VACIO;

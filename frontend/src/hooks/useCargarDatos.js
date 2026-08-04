@@ -1,24 +1,21 @@
 import { useState, useEffect, useCallback } from 'react';
 
-// ---------------------------------------------------------------------------
-// Hook propio para pedir datos a la API.
-// Centraliza el patrón que se repite en todas las pantallas:
-// "cargando" mientras se espera, "error" si algo falla y los datos si sale bien.
+// Hook para pedirle datos a la API.
+// Junta lo que se repetía en todas las pantallas: mostrar "cargando" mientras
+// llega la respuesta, el error si falla, y los datos si sale todo bien.
 //
-// consulta: función async (envuelta en useCallback) que devuelve los datos.
-//
+// consulta: una función async (envuelta en useCallback) que devuelve los datos.
 // Devuelve: { datos, cargando, error, recargar }
-// ---------------------------------------------------------------------------
 export function useCargarDatos(consulta) {
     const [datos, setDatos] = useState(null);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
-    // Cambiar este número vuelve a disparar el efecto (sirve para "Reintentar").
+    // Cambiar este número vuelve a disparar el efecto, es lo que usa "Reintentar".
     const [intento, setIntento] = useState(0);
 
     useEffect(() => {
-        // Si el componente se desmonta antes de que llegue la respuesta,
-        // "vigente" evita actualizar el estado de un componente que ya no existe.
+        // Si te vas de la pantalla antes de que llegue la respuesta, "vigente"
+        // evita que intente actualizar un componente que ya no está.
         let vigente = true;
 
         consulta()

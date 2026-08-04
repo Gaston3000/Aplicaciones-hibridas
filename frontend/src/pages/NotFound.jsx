@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-// Página 404: cualquier ruta que no exista cae acá.
+// El 404. Cualquier ruta que no exista termina acá.
 function NotFound() {
   return (
     <section className="pagina-mensaje">

@@ -10,7 +10,8 @@ import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
 import EmptyState from "../../components/EmptyState";
 
-// Listado de usuarios. La contraseña nunca se muestra: la API no la devuelve.
+// El listado de usuarios. La contraseña no se muestra nunca porque la API
+// directamente no la manda.
 function AdminUsuarios() {
   const { usuario: usuarioActual } = useAuth();
   const [aviso, setAviso] = useState(null);
@@ -30,7 +31,7 @@ function AdminUsuarios() {
       setAviso({ tipo: "ok", texto: `Se eliminó a ${aEliminar.nombre}` });
       recargar();
     } catch (err) {
-      // El backend responde 409 si es el último admin o si es la propia cuenta.
+      // Acá cae el 409 de "es el último admin" o "es tu propia cuenta".
       setAviso({ tipo: "error", texto: err.message });
     } finally {
       setAEliminar(null);
@@ -87,7 +88,7 @@ function AdminUsuarios() {
                 type="button"
                 className="btn-tabla peligro"
                 onClick={() => setAEliminar(fila)}
-                // No se puede borrar la cuenta con la que se está trabajando.
+                // No dejo borrar la cuenta con la que estoy laburando.
                 disabled={fila._id === usuarioActual?._id}
                 title={
                   fila._id === usuarioActual?._id

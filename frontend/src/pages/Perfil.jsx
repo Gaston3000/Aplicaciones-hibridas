@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { formatearFecha } from "../utils/formato";
 
-// Página protegida con PrivateRoute: solo se ve con la sesión iniciada.
+// Va adentro de PrivateRoute, así que solo se ve con la sesión iniciada.
 function Perfil() {
   const { usuario, esAdmin } = useAuth();
 

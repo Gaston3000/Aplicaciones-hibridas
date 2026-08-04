@@ -10,11 +10,11 @@ import { verificarToken, soloAdmin } from '../middlewares/auth.js';
 
 const router = Router();
 
-// La lectura es pública (la usa el FrontOffice para filtrar sedes).
+// Leer es libre, el front las usa para armar los filtros.
 router.get('/', getCategorias);
 router.get('/:id', getCategoriaById);
 
-// Crear, editar y eliminar: solo administradores autenticados.
+// Crear, editar y borrar: solo admin y con token.
 router.post('/', verificarToken, soloAdmin, postCategoria);
 router.put('/:id', verificarToken, soloAdmin, putCategoria);
 router.delete('/:id', verificarToken, soloAdmin, deleteCategoria);

@@ -2,15 +2,13 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import Loading from './Loading';
 
-// ---------------------------------------------------------------------------
-// PrivateRoute: protege las páginas que necesitan estar logueado.
-// - Mientras se comprueba el token guardado, muestra "Cargando".
-// - Si no hay sesión, redirige a /login y recuerda a dónde quería entrar.
-// - Con "soloAdministradores" además exige el rol admin.
+// Tapa las páginas a las que no podés entrar sin estar logueado.
+// - Mientras chequea el token guardado muestra "cargando".
+// - Si no hay sesión te manda a /login, pero se acuerda de a dónde querías ir.
+// - Con "soloAdministradores" además te pide que seas admin.
 //
-// Ojo: esto es protección de la interfaz. El backend TAMBIÉN valida el token
-// y el rol en cada endpoint, así que no alcanza con tocar el frontend.
-// ---------------------------------------------------------------------------
+// Ojo: esto es solo la interfaz. El backend igual valida el token y el rol en
+// cada endpoint, así que tocando el front no te alcanza para entrar.
 function PrivateRoute({ children, soloAdministradores = false }) {
     const { estaAutenticado, esAdmin, cargando } = useAuth();
     const ubicacion = useLocation();
@@ -23,6 +21,7 @@ function PrivateRoute({ children, soloAdministradores = false }) {
         return <Navigate to="/login" state={{ desde: ubicacion.pathname }} replace />;
     }
 
+    // Está logueado pero es un usuario común queriendo entrar al panel.
     if (soloAdministradores && !esAdmin) {
         return <Navigate to="/acceso-denegado" replace />;
     }

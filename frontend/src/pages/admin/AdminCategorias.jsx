@@ -10,8 +10,8 @@ import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
 import EmptyState from "../../components/EmptyState";
 
-// Listado de categorías. También muestra cuántos estadios usa cada una,
-// porque una categoría con estadios asociados no se puede eliminar.
+// El listado de categorías. Muestro cuántas sedes usa cada una porque, si
+// tiene alguna colgando, el backend no te la deja borrar.
 function AdminCategorias() {
   const [aviso, setAviso] = useState(null);
   const [aEliminar, setAEliminar] = useState(null);
@@ -38,7 +38,7 @@ function AdminCategorias() {
       setAviso({ tipo: "ok", texto: `Se eliminó la categoría "${aEliminar.nombre}"` });
       recargar();
     } catch (err) {
-      // El backend devuelve 409 si la categoría tiene estadios asociados.
+      // Acá suele caer el 409 de "tiene estadios asociados".
       setAviso({ tipo: "error", texto: err.message });
     } finally {
       setAEliminar(null);

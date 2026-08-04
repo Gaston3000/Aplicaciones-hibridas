@@ -13,14 +13,14 @@ import { verificarToken, soloAdmin } from '../middlewares/auth.js';
 
 const router = Router();
 
-// --- Públicas ---
+// Estas las puede usar cualquiera
 router.post('/registro', registrar);
 router.post('/login', login);
 
-// --- Requiere estar logueado ---
+// Para esta hay que estar logueado
 router.get('/perfil', verificarToken, getPerfil);
 
-// --- Solo administradores (BackOffice) ---
+// Y de acá para abajo, solo los admin (es lo que usa el panel)
 router.get('/', verificarToken, soloAdmin, getUsuarios);
 router.post('/', verificarToken, soloAdmin, postUsuario);
 router.get('/:id', verificarToken, soloAdmin, getUsuarioById);

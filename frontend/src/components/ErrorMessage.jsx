@@ -1,4 +1,4 @@
-// Muestra un error y, si se le pasa onReintentar, un botón para volver a probar.
+// Muestra el error y, si le paso onReintentar, un botón para volver a probar.
 function ErrorMessage({ mensaje, onReintentar }) {
     if (!mensaje) return null;
 

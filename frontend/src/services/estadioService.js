@@ -1,7 +1,7 @@
 import { request } from './api';
 
-// Llamadas al recurso /api/estadios.
-// Las lecturas son públicas; crear, editar y borrar necesitan token de admin.
+// Todo lo que le pido a /api/estadios.
+// Leer es libre; para crear, editar y borrar hace falta el token de admin.
 
 export const getEstadios = () => request('/api/estadios');
 

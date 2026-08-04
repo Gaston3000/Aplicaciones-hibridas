@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Input from "../Input";
 
-// Formulario de alta y edición de categorías.
+// El formulario para cargar y editar categorías.
 function FormularioCategoria({ valoresIniciales, onGuardar, onCancelar, guardando }) {
   const [form, setForm] = useState(valoresIniciales);
   const [errores, setErrores] = useState({});

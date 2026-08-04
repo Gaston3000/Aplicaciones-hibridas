@@ -1,4 +1,5 @@
-// Estado vacío: cuando la consulta funcionó pero no hay nada que mostrar.
+// Para cuando la consulta salió bien pero no hay nada que mostrar.
+// No es lo mismo que un error y conviene que se note.
 function EmptyState({ titulo = 'No hay datos para mostrar', texto, children }) {
     return (
         <div className="estado-vacio">

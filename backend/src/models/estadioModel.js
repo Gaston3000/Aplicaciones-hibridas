@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
 
-// Modelo Estadio: cada sede oficial del Mundial 2026.
-// "categoria" NO es un texto: es una referencia real a la colección Categoria,
-// así se puede usar .populate('categoria') y mostrar el nombre en el frontend.
+// Cada sede oficial del Mundial 2026.
+// Ojo con "categoria": no es un texto, es el id de un documento de Categoria.
+// Guardándolo así después puedo usar .populate('categoria') y mostrar el nombre
+// en el front sin tener que hacer otra consulta.
 const estadioSchema = new mongoose.Schema(
     {
         nombre: {

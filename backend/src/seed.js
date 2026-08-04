@@ -3,11 +3,9 @@ import Categoria from './models/categoriaModel.js';
 import Estadio from './models/estadioModel.js';
 import Usuario from './models/usuarioModel.js';
 
-// ---------------------------------------------------------------------------
-// Datos iniciales de la aplicación.
-// El seed es "idempotente": se puede correr muchas veces sin duplicar nada,
-// porque antes de crear cada registro revisa si ya existe.
-// ---------------------------------------------------------------------------
+// Los datos con los que arranca la app.
+// Está hecho para poder correrlo mil veces sin que se dupliquen los registros:
+// antes de crear cada cosa se fija si ya estaba.
 
 const CATEGORIAS = [
     { nombre: 'Sede de la Final', descripcion: 'El estadio que recibe el partido decisivo del torneo.' },
@@ -63,7 +61,8 @@ const ESTADIOS = [
     }
 ];
 
-// Crea las categorías que falten y devuelve un mapa { nombre -> _id }.
+// Crea las categorías que falten y me devuelve un { nombre -> _id },
+// que después uso para enganchar cada estadio con la suya.
 const cargarCategorias = async () => {
     const mapa = {};
 
@@ -78,7 +77,7 @@ const cargarCategorias = async () => {
     return mapa;
 };
 
-// Crea los estadios que falten, enlazándolos con el _id real de su categoría.
+// Crea los estadios que falten, ya apuntando al _id real de su categoría.
 const cargarEstadios = async (mapaCategorias) => {
     let creados = 0;
 
@@ -96,7 +95,8 @@ const cargarEstadios = async (mapaCategorias) => {
     return creados;
 };
 
-// Crea el usuario administrador inicial usando las variables de entorno.
+// Crea el admin del principio. Los datos salen del .env para no dejar
+// ninguna contraseña escrita en el repo.
 const cargarAdmin = async () => {
     const email = (process.env.ADMIN_EMAIL || '').trim().toLowerCase();
     const password = process.env.ADMIN_PASSWORD;

@@ -9,7 +9,7 @@ import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
 import EmptyState from "../../components/EmptyState";
 
-// Listado de estadios del BackOffice con las acciones de editar y eliminar.
+// El listado de sedes del panel, con los botones de editar y borrar.
 function AdminEstadios() {
   const [aviso, setAviso] = useState(null);
   const [aEliminar, setAEliminar] = useState(null);

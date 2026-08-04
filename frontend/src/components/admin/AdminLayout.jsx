@@ -2,8 +2,8 @@ import { useState } from "react";
 import { NavLink, Link, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 
-// Estructura común de todo el BackOffice: menú lateral + encabezado.
-// Las páginas del panel se dibujan en el <Outlet />.
+// El molde de todo el panel: el menú de la izquierda y el encabezado.
+// Cada pantalla del panel se dibuja adentro del <Outlet />.
 function AdminLayout() {
   const { usuario, cerrarSesion } = useAuth();
   const [menuAbierto, setMenuAbierto] = useState(false);
@@ -65,7 +65,7 @@ function AdminLayout() {
         </main>
       </div>
 
-      {/* Fondo oscuro que cierra el menú en celular */}
+      {/* El fondo oscuro de atrás del menú en celular: si lo tocás, se cierra */}
       {menuAbierto && <div className="admin-fondo" onClick={cerrarMenu}></div>}
     </div>
   );

@@ -33,7 +33,7 @@ import "./admin.css";
 function App() {
   return (
     <Routes>
-      {/* ---------- FrontOffice: parte pública ---------- */}
+      {/* La parte pública */}
       <Route element={<LayoutPublico />}>
         <Route path="/" element={<Home />} />
         <Route path="/estadios" element={<Estadios />} />
@@ -41,7 +41,7 @@ function App() {
         <Route path="/registro" element={<Register />} />
         <Route path="/login" element={<Login />} />
 
-        {/* Necesita sesión iniciada (cualquier rol) */}
+        {/* Estas piden estar logueado, no importa el rol */}
         <Route
           path="/perfil"
           element={
@@ -59,11 +59,11 @@ function App() {
           }
         />
 
-        {/* Cualquier ruta que no exista */}
+        {/* El comodín: cualquier ruta que no exista cae acá */}
         <Route path="*" element={<NotFound />} />
       </Route>
 
-      {/* ---------- BackOffice: solo administradores ---------- */}
+      {/* El panel, solo para admins */}
       <Route
         path="/admin"
         element={

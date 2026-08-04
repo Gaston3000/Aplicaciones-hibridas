@@ -1,5 +1,5 @@
 :root {
-  /* base oscura tipo estadio de noche */
+  /* la base oscura, tipo estadio de noche */
   --bg: #05070c;
   --bg-soft: #0b0f18;
   --surface: rgba(255, 255, 255, 0.035);
@@ -8,7 +8,7 @@
   --text: #eaf1ff;
   --muted: #8b97ac;
 
-  /* acentos: verde césped neón + magenta mundialista */
+  /* los acentos: verde césped neón y el magenta mundialista */
   --green: #29ff8c;
   --green-soft: rgba(41, 255, 140, 0.16);
   --pink: #ff2e7e;
@@ -29,7 +29,7 @@ body {
   color: var(--text);
   font-family: var(--font-body);
   background-color: var(--bg);
-  /* luces de reflector: glows radiales fijos sobre el negro */
+  /* las luces de los reflectores: tres manchas de color fijas sobre el negro */
   background-image:
     radial-gradient(1200px 600px at 12% -8%, rgba(41, 255, 140, 0.10), transparent 60%),
     radial-gradient(1000px 540px at 92% 0%, rgba(255, 46, 126, 0.10), transparent 60%),
@@ -43,7 +43,7 @@ a {
   text-decoration: none;
 }
 
-/* scrollbar al tono */
+/* la barra de scroll a tono, si no queda blanca y desentona */
 ::-webkit-scrollbar {
   width: 10px;
 }

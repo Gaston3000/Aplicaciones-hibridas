@@ -1,9 +1,7 @@
 import Categoria from '../models/categoriaModel.js';
 import Estadio from '../models/estadioModel.js';
 
-// ---------------------------------------------------------------------------
 // GET /api/categorias  (público)
-// ---------------------------------------------------------------------------
 export const getCategorias = async (req, res, next) => {
     try {
         const categorias = await Categoria.find().sort({ nombre: 1 });
@@ -13,9 +11,7 @@ export const getCategorias = async (req, res, next) => {
     }
 };
 
-// ---------------------------------------------------------------------------
 // GET /api/categorias/:id  (público)
-// ---------------------------------------------------------------------------
 export const getCategoriaById = async (req, res, next) => {
     try {
         const categoria = await Categoria.findById(req.params.id);
@@ -28,9 +24,7 @@ export const getCategoriaById = async (req, res, next) => {
     }
 };
 
-// ---------------------------------------------------------------------------
 // POST /api/categorias  (solo admin)
-// ---------------------------------------------------------------------------
 export const postCategoria = async (req, res, next) => {
     try {
         const { nombre, descripcion, activo } = req.body || {};
@@ -41,7 +35,7 @@ export const postCategoria = async (req, res, next) => {
 
         const nombreLimpio = String(nombre).trim();
 
-        // Evitamos categorías duplicadas (comparación sin distinguir mayúsculas).
+        // Busco sin distinguir mayúsculas, así no entran "Premium" y "premium" juntas.
         const existe = await Categoria.findOne({
             nombre: new RegExp(`^${escaparRegex(nombreLimpio)}$`, 'i')
         });
@@ -61,9 +55,7 @@ export const postCategoria = async (req, res, next) => {
     }
 };
 
-// ---------------------------------------------------------------------------
 // PUT /api/categorias/:id  (solo admin)
-// ---------------------------------------------------------------------------
 export const putCategoria = async (req, res, next) => {
     try {
         const { nombre } = req.body || {};
@@ -73,7 +65,7 @@ export const putCategoria = async (req, res, next) => {
         }
 
         if (nombre) {
-            // Que el nombre nuevo no lo tenga ya OTRA categoría.
+            // Igual que en el alta, pero salteando la categoría que estoy editando.
             const existe = await Categoria.findOne({
                 _id: { $ne: req.params.id },
                 nombre: new RegExp(`^${escaparRegex(String(nombre).trim())}$`, 'i')
@@ -98,11 +90,9 @@ export const putCategoria = async (req, res, next) => {
     }
 };
 
-// ---------------------------------------------------------------------------
 // DELETE /api/categorias/:id  (solo admin)
-// No se puede borrar una categoría que tenga estadios asociados: si no,
-// esos estadios quedarían apuntando a una categoría que ya no existe.
-// ---------------------------------------------------------------------------
+// No dejo borrar una categoría que tenga estadios colgando, porque esos
+// estadios quedarían apuntando a algo que ya no existe.
 export const deleteCategoria = async (req, res, next) => {
     try {
         const categoria = await Categoria.findById(req.params.id);
@@ -124,7 +114,7 @@ export const deleteCategoria = async (req, res, next) => {
     }
 };
 
-// Escapa los caracteres especiales para poder buscar un nombre exacto con RegExp.
+// Escapa los caracteres raros para poder buscar el nombre exacto con RegExp.
 function escaparRegex(texto) {
     return texto.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

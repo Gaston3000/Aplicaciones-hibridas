@@ -8,8 +8,8 @@ import { useAuth } from "../../hooks/useAuth";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
 
-// Dashboard del BackOffice: un resumen simple con la cantidad de registros
-// de cada entidad. Los números salen de la API, no están escritos a mano.
+// El resumen del panel: cuántos hay de cada cosa.
+// Los números salen de la API, no están puestos a mano.
 function Dashboard() {
   const { usuario } = useAuth();
 

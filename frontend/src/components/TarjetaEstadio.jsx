@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { formatearPrecio } from "../utils/formato";
 
-// Tarjeta de una sede (estadio). Recibe el estadio por props.
-// La categoría llega populada desde la API, por eso se usa categoria.nombre.
+// La tarjeta de cada sede. El estadio le llega por props.
+// La categoría viene populada desde la API, por eso puedo usar categoria.nombre.
 function TarjetaEstadio({ estadio, index = 0 }) {
   const [sinFoto, setSinFoto] = useState(false);
 

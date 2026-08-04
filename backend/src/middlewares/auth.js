@@ -1,10 +1,8 @@
 import jwt from 'jsonwebtoken';
 
-// ---------------------------------------------------------------------------
-// verificarToken: revisa que venga un JWT válido en el header Authorization.
-// Se usa así:  Authorization: Bearer <token>
-// Si el token está OK, deja los datos del usuario en req.usuario y sigue.
-// ---------------------------------------------------------------------------
+// Chequea que venga un token válido en el header Authorization.
+// Se manda así:  Authorization: Bearer <token>
+// Si está todo bien deja los datos del usuario en req.usuario y sigue de largo.
 export const verificarToken = (req, res, next) => {
     const header = req.headers.authorization;
 
@@ -15,12 +13,12 @@ export const verificarToken = (req, res, next) => {
     const token = header.split(' ')[1];
 
     try {
-        // El secreto SIEMPRE sale de las variables de entorno (nunca escrito en el código).
+        // El secreto sale del .env, nunca lo escribo acá en el código.
         const datos = jwt.verify(token, process.env.JWT_SECRET);
         req.usuario = datos; // { id, email, rol }
         next();
     } catch (error) {
-        // jsonwebtoken avisa distinto si el token venció o si es inválido.
+        // jsonwebtoken avisa distinto si el token venció o si directamente es trucho.
         if (error.name === 'TokenExpiredError') {
             return res.status(401).json({ error: 'La sesión expiró, volvé a iniciar sesión' });
         }
@@ -28,10 +26,8 @@ export const verificarToken = (req, res, next) => {
     }
 };
 
-// ---------------------------------------------------------------------------
-// soloAdmin: se usa DESPUÉS de verificarToken.
-// Deja pasar únicamente a los usuarios con rol "admin".
-// ---------------------------------------------------------------------------
+// Este va siempre después de verificarToken.
+// Deja pasar solo a los que tienen rol "admin".
 export const soloAdmin = (req, res, next) => {
     if (!req.usuario) {
         return res.status(401).json({ error: 'Falta el token de autenticación' });

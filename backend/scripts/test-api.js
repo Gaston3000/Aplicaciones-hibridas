@@ -1,13 +1,13 @@
 /**
- * Pruebas de la API.
+ * Las pruebas de la API.
  *
- * Recorre todos los endpoints y verifica que devuelvan el código HTTP correcto:
- * registro, login, tokens, roles, CRUD de las tres entidades, validaciones,
- * IDs inválidos y recursos inexistentes.
+ * Pega en todos los endpoints y chequea que devuelvan el código HTTP que
+ * corresponde: registro, login, tokens, roles, el CRUD de las tres entidades,
+ * validaciones, ids mal escritos y cosas que no existen.
  *
- * Cómo usarlo:
- *   1) en una terminal:  npm start          (levanta el backend)
- *   2) en otra terminal: npm run test:api
+ * Para correrlo hacen falta dos terminales:
+ *   1) en una:  npm start          (levanta el backend)
+ *   2) en otra: npm run test:api
  */
 
 import 'dotenv/config';
@@ -20,7 +20,7 @@ let pasaron = 0;
 let fallaron = 0;
 const fallos = [];
 
-// Hace el pedido y devuelve { status, body }.
+// Hace el pedido y me devuelve { status, body } para no repetir el fetch.
 async function pedir(metodo, ruta, { token, body } = {}) {
     const headers = {};
     if (body) headers['Content-Type'] = 'application/json';
@@ -63,10 +63,11 @@ function titulo(texto) {
 async function main() {
     console.log(`Probando la API en ${API}\n`);
 
-    // Email único para que el script se pueda correr muchas veces seguidas.
+    // Le meto la hora al email para poder correr el script mil veces seguidas
+    // sin que choque con un usuario de la corrida anterior.
     const emailNuevo = `test_${Date.now()}@test.com`;
 
-    // ---------------------------------------------------------------- USUARIOS
+    // --- Usuarios ---
     titulo('Registro y login');
 
     let r = await pedir('POST', '/api/usuarios/registro', {
@@ -112,7 +113,7 @@ async function main() {
     });
     chequear('Login con email inexistente', 401, r.status);
 
-    // ------------------------------------------------------------------ TOKENS
+    // --- Tokens ---
     titulo('Tokens y roles');
 
     r = await pedir('GET', '/api/usuarios/perfil');
@@ -136,7 +137,7 @@ async function main() {
     r = await pedir('POST', '/api/estadios', { body: { nombre: 'Sin token' } });
     chequear('Crear estadio sin token', 401, r.status);
 
-    // Login del administrador creado por el seed.
+    // Ahora entro como el admin que crea el seed.
     r = await pedir('POST', '/api/usuarios/login', {
         body: { email: ADMIN_EMAIL, password: ADMIN_PASSWORD }
     });
@@ -153,7 +154,7 @@ async function main() {
     chequear('Admin listando usuarios', 200, r.status);
     chequear('El listado de usuarios es un array', true, Array.isArray(r.body));
 
-    // -------------------------------------------------------------- CATEGORIAS
+    // --- Categorias ---
     titulo('CRUD de categorías');
 
     r = await pedir('GET', '/api/categorias');
@@ -194,7 +195,7 @@ async function main() {
     r = await pedir('GET', '/api/categorias/id-invalido');
     chequear('Categoría con ID de formato inválido', 400, r.status);
 
-    // ---------------------------------------------------------------- ESTADIOS
+    // --- Estadios ---
     titulo('CRUD de estadios');
 
     r = await pedir('GET', '/api/estadios');
@@ -275,7 +276,8 @@ async function main() {
     r = await pedir('DELETE', `/api/estadios/${estadioId}`, { token: tokenUsuario });
     chequear('Usuario común eliminando estadio', 403, r.status);
 
-    // La categoría de prueba tiene un estadio asociado: no se debe poder borrar.
+    // La categoría de prueba tiene un estadio colgando, así que no me la tiene
+    // que dejar borrar hasta que saque el estadio.
     r = await pedir('DELETE', `/api/categorias/${categoriaId}`, { token: tokenAdmin });
     chequear('Eliminar categoría con estadios asociados', 409, r.status);
 
@@ -285,7 +287,7 @@ async function main() {
     r = await pedir('DELETE', `/api/categorias/${categoriaId}`, { token: tokenAdmin });
     chequear('Eliminar categoría ya sin estadios', 200, r.status);
 
-    // ---------------------------------------------------------------- USUARIOS
+    // --- Usuarios ---
     titulo('CRUD de usuarios (admin)');
 
     const emailAdminTest = `admin_test_${Date.now()}@test.com`;
@@ -324,7 +326,7 @@ async function main() {
     r = await pedir('DELETE', `/api/usuarios/${usuarioId}`, { token: tokenAdmin });
     chequear('Admin eliminando usuario', 200, r.status);
 
-    // -------------------------------------------------------------------- VARIOS
+    // --- Varios ---
     titulo('Rutas y errores generales');
 
     r = await pedir('GET', '/api/ruta-que-no-existe');

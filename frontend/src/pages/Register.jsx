@@ -26,7 +26,7 @@ function Register() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // que no se recargue la página al enviar
+    e.preventDefault(); // si no, se recarga la página al enviar
     setMensaje(null);
 
     const nuevos = validar();
@@ -36,7 +36,7 @@ function Register() {
     setEnviando(true);
     try {
       await registrarse(form);
-      // Después de crear la cuenta iniciamos sesión automáticamente.
+      // Ya que tengo los datos, lo logueo solo así no los escribe de nuevo.
       await iniciarSesion(form.email, form.password);
       navigate("/", { replace: true });
     } catch (error) {

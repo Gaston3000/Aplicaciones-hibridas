@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Input from "../Input";
 
-// Formulario de alta y edición de estadios.
-// Recibe los valores iniciales y avisa el resultado por onGuardar.
+// El formulario para cargar y editar sedes.
+// Le paso los valores iniciales y me avisa por onGuardar cuando está listo.
 function FormularioEstadio({ valoresIniciales, categorias, onGuardar, onCancelar, guardando }) {
   const [form, setForm] = useState(valoresIniciales);
   const [errores, setErrores] = useState({});

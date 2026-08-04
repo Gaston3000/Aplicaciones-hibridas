@@ -8,7 +8,7 @@ import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
 import EmptyState from "../../components/EmptyState";
 
-// Valores por defecto de un estadio nuevo.
+// Con esto arranca el formulario cuando es una sede nueva.
 const VACIO = {
   nombre: "",
   ciudad: "",
@@ -21,7 +21,7 @@ const VACIO = {
   activo: true,
 };
 
-// Pasa el estadio de la API al formato que usa el formulario.
+// Pasa el estadio como viene de la API al formato que espera el formulario.
 const aFormulario = (estadio) => ({
   nombre: estadio.nombre || "",
   ciudad: estadio.ciudad || "",
@@ -30,12 +30,12 @@ const aFormulario = (estadio) => ({
   precio: estadio.precio ?? "",
   capacidad: estadio.capacidad ?? "",
   imagen: estadio.imagen || "",
-  // La categoría llega populada: guardamos solo el id para el <select>.
+  // La categoría viene populada, pero el <select> necesita solo el id.
   categoria: estadio.categoria?._id || "",
   activo: estadio.activo ?? true,
 });
 
-// Misma página para crear y para editar: si la URL trae un :id, es edición.
+// La misma pantalla sirve para crear y para editar: si la URL trae :id, es edición.
 function AdminEstadioForm() {
   const { id } = useParams();
   const esEdicion = Boolean(id);
@@ -74,7 +74,8 @@ function AdminEstadioForm() {
   const categorias = datos?.categorias ?? [];
   const valoresIniciales = datos?.estadio ? aFormulario(datos.estadio) : VACIO;
 
-  // Sin categorías no se puede crear un estadio: la categoría es obligatoria.
+  // Sin categorías no puedo cargar una sede, porque la categoría es obligatoria.
+  // Mejor avisarlo acá que dejar que se coma un error del backend.
   if (categorias.length === 0) {
     return (
       <>
