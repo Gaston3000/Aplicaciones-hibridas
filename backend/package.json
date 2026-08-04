@@ -1,12 +1,13 @@
 {
-  "name": "semana-06",
+  "name": "world-cup-26-backend",
   "version": "1.0.0",
-  "description": "API de productos de limpieza con usuarios, login y JWT. Persistencia en MongoDB.",
+  "description": "API REST de las sedes del Mundial 2026: usuarios con JWT, estadios y categorias sobre MongoDB.",
   "main": "src/index.js",
   "type": "module",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "node --watch src/index.js"
+    "dev": "node --watch src/index.js",
+    "test:api": "node scripts/test-api.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -14,9 +15,14 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
-    "mongodb-memory-server": "^10.1.2",
     "mongoose": "^8.5.1"
   },
-  "author": "Gaston",
+  "devDependencies": {
+    "mongodb-memory-server": "^10.1.2"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "author": "Gaston Costabella",
   "license": "ISC"
 }

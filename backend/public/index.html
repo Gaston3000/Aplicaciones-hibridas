@@ -3,41 +3,78 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>API Limpieza Total</title>
+    <title>API World Cup 26 · Sedes Oficiales</title>
     <style>
       body {
         font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-        background: #F5EFE3;
-        color: #1a1a1a;
-        max-width: 720px;
+        background: #05070c;
+        color: #eaf1ff;
+        max-width: 760px;
         margin: 0 auto;
         padding: 56px 24px;
+        line-height: 1.6;
       }
-      h1 { margin: 0 0 8px; }
-      p.sub { color: #6b6b6b; margin: 0 0 32px; }
+      h1 { margin: 0 0 8px; font-size: 30px; }
+      h1 b { color: #29ff8c; }
+      h2 { margin: 36px 0 12px; font-size: 18px; text-transform: uppercase; letter-spacing: 1.5px; color: #8b97ac; }
+      p.sub { color: #8b97ac; margin: 0 0 24px; }
       code {
-        background: #fff;
-        border: 1px solid #ddd;
-        padding: 2px 6px;
-        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 2px 7px;
+        border-radius: 5px;
+        font-size: 13.5px;
       }
+      ul { padding-left: 20px; }
       li { margin-bottom: 8px; }
-      .metodo { font-weight: 700; }
+      .metodo { display: inline-block; min-width: 58px; font-weight: 800; color: #29ff8c; }
+      .privado { color: #ff2e7e; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; }
+      footer { margin-top: 44px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); color: #8b97ac; font-size: 13px; }
     </style>
   </head>
   <body>
-    <h1>API Limpieza Total</h1>
-    <p class="sub">Backend de productos de limpieza con usuarios, login y JWT.</p>
+    <h1>API WORLD CUP <b>26</b></h1>
+    <p class="sub">
+      API REST de las sedes oficiales del Mundial 2026. Autenticación con JWT,
+      base de datos MongoDB y tres entidades: Usuario, Estadio y Categoría.
+    </p>
 
-    <h2>Endpoints</h2>
+    <h2>Usuarios</h2>
     <ul>
-      <li><span class="metodo">POST</span> <code>/api/usuarios/registro</code> — crear usuario</li>
-      <li><span class="metodo">POST</span> <code>/api/usuarios/login</code> — iniciar sesion (devuelve token)</li>
-      <li><span class="metodo">GET</span> <code>/api/productos</code> — listar productos</li>
-      <li><span class="metodo">GET</span> <code>/api/productos/:id</code> — ver un producto</li>
-      <li><span class="metodo">GET</span> <code>/api/categorias</code> — listar categorias</li>
+      <li><span class="metodo">POST</span> <code>/api/usuarios/registro</code> — crear una cuenta</li>
+      <li><span class="metodo">POST</span> <code>/api/usuarios/login</code> — iniciar sesión (devuelve el token)</li>
+      <li><span class="metodo">GET</span> <code>/api/usuarios/perfil</code> — datos del usuario logueado <span class="privado">token</span></li>
+      <li><span class="metodo">GET</span> <code>/api/usuarios</code> — listar usuarios <span class="privado">admin</span></li>
+      <li><span class="metodo">POST</span> <code>/api/usuarios</code> — crear usuario <span class="privado">admin</span></li>
+      <li><span class="metodo">GET</span> <code>/api/usuarios/:id</code> — ver un usuario <span class="privado">admin</span></li>
+      <li><span class="metodo">PUT</span> <code>/api/usuarios/:id</code> — editar usuario <span class="privado">admin</span></li>
+      <li><span class="metodo">DELETE</span> <code>/api/usuarios/:id</code> — eliminar usuario <span class="privado">admin</span></li>
     </ul>
 
-    <p>Las rutas de escritura (POST/PUT/DELETE de productos y categorias) requieren el token en el header <code>Authorization: Bearer &lt;token&gt;</code>.</p>
+    <h2>Estadios</h2>
+    <ul>
+      <li><span class="metodo">GET</span> <code>/api/estadios</code> — listar sedes</li>
+      <li><span class="metodo">GET</span> <code>/api/estadios/:id</code> — ver una sede</li>
+      <li><span class="metodo">POST</span> <code>/api/estadios</code> — crear sede <span class="privado">admin</span></li>
+      <li><span class="metodo">PUT</span> <code>/api/estadios/:id</code> — editar sede <span class="privado">admin</span></li>
+      <li><span class="metodo">DELETE</span> <code>/api/estadios/:id</code> — eliminar sede <span class="privado">admin</span></li>
+    </ul>
+
+    <h2>Categorías</h2>
+    <ul>
+      <li><span class="metodo">GET</span> <code>/api/categorias</code> — listar categorías</li>
+      <li><span class="metodo">GET</span> <code>/api/categorias/:id</code> — ver una categoría</li>
+      <li><span class="metodo">POST</span> <code>/api/categorias</code> — crear categoría <span class="privado">admin</span></li>
+      <li><span class="metodo">PUT</span> <code>/api/categorias/:id</code> — editar categoría <span class="privado">admin</span></li>
+      <li><span class="metodo">DELETE</span> <code>/api/categorias/:id</code> — eliminar categoría <span class="privado">admin</span></li>
+    </ul>
+
+    <footer>
+      Las rutas marcadas necesitan el header
+      <code>Authorization: Bearer &lt;token&gt;</code>.
+      Las marcadas como <span class="privado">admin</span> además requieren rol de administrador.
+      <br />
+      Trabajo final · Aplicaciones Híbridas · Gastón Costabella
+    </footer>
   </body>
 </html>

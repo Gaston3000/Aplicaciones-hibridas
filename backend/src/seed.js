@@ -1,46 +1,140 @@
-import Producto from './models/productoModel.js';
+import bcrypt from 'bcryptjs';
+import Categoria from './models/categoriaModel.js';
+import Estadio from './models/estadioModel.js';
+import Usuario from './models/usuarioModel.js';
 
-// Carga los estadios (productos) la primera vez, para tener datos con los que probar
-// el GET y la pagina de detalle del front. Si ya hay productos no hace nada.
-export const seedProductos = async () => {
-    const total = await Producto.countDocuments();
-    if (total > 0) return;
+// ---------------------------------------------------------------------------
+// Datos iniciales de la aplicación.
+// El seed es "idempotente": se puede correr muchas veces sin duplicar nada,
+// porque antes de crear cada registro revisa si ya existe.
+// ---------------------------------------------------------------------------
 
-    await Producto.insertMany([
-        {
-            nombre: 'New York New Jersey Stadium',
-            marca: 'Nueva York / Nueva Jersey',
-            categoria: 'Sede de la Final',
-            precio: 1250000000,
-            imagen: '/estadios/new-york.jpg',
-            descripcion: 'Sede premium del Mundial 2026, pensada para noches históricas, finales inolvidables y eventos de escala mundial.'
-        },
-        {
-            nombre: 'Dallas Stadium',
-            marca: 'Dallas, Texas',
-            categoria: 'Sede Premium',
-            precio: 890000000,
-            imagen: '/estadios/dallas.jpg',
-            descripcion: 'Un estadio imponente, moderno y preparado para recibir partidos masivos con una experiencia visual de alto impacto.'
-        },
-        {
-            nombre: 'Los Angeles Stadium',
-            marca: 'Los Ángeles, California',
-            categoria: 'Sede Tecnológica',
-            precio: 1100000000,
-            imagen: '/estadios/los-angeles.jpg',
-            descripcion: 'Una sede cinematográfica, tecnológica y elegante, ideal para vivir el Mundial con una estética moderna y global.'
-        },
-        {
-            nombre: 'Miami Stadium',
-            marca: 'Miami, Florida',
-            categoria: 'Sede Exclusiva',
-            precio: 760000000,
-            imagen: '/estadios/miami.jpg',
-            descripcion: 'Una sede vibrante, cálida y exclusiva, con energía internacional y una experiencia mundialista única.'
+const CATEGORIAS = [
+    { nombre: 'Sede de la Final', descripcion: 'El estadio que recibe el partido decisivo del torneo.' },
+    { nombre: 'Sede Premium', descripcion: 'Estadios de gran capacidad para los partidos más convocantes.' },
+    { nombre: 'Sede Tecnológica', descripcion: 'Sedes con la infraestructura más moderna del Mundial.' },
+    { nombre: 'Sede Exclusiva', descripcion: 'Sedes con una experiencia internacional y de alto perfil.' }
+];
+
+const ESTADIOS = [
+    {
+        nombre: 'New York New Jersey Stadium',
+        ciudad: 'Nueva York / Nueva Jersey',
+        estado: 'Nueva Jersey',
+        categoria: 'Sede de la Final',
+        precio: 1250000000,
+        capacidad: 82500,
+        imagen: '/estadios/new-york.jpg',
+        descripcion:
+            'Sede premium del Mundial 2026, pensada para noches históricas, finales inolvidables y eventos de escala mundial.'
+    },
+    {
+        nombre: 'Dallas Stadium',
+        ciudad: 'Dallas',
+        estado: 'Texas',
+        categoria: 'Sede Premium',
+        precio: 890000000,
+        capacidad: 80000,
+        imagen: '/estadios/dallas.jpg',
+        descripcion:
+            'Un estadio imponente, moderno y preparado para recibir partidos masivos con una experiencia visual de alto impacto.'
+    },
+    {
+        nombre: 'Los Angeles Stadium',
+        ciudad: 'Los Ángeles',
+        estado: 'California',
+        categoria: 'Sede Tecnológica',
+        precio: 1100000000,
+        capacidad: 70240,
+        imagen: '/estadios/los-angeles.jpg',
+        descripcion:
+            'Una sede cinematográfica, tecnológica y elegante, ideal para vivir el Mundial con una estética moderna y global.'
+    },
+    {
+        nombre: 'Miami Stadium',
+        ciudad: 'Miami',
+        estado: 'Florida',
+        categoria: 'Sede Exclusiva',
+        precio: 760000000,
+        capacidad: 65326,
+        imagen: '/estadios/miami.jpg',
+        descripcion:
+            'Una sede vibrante, cálida y exclusiva, con energía internacional y una experiencia mundialista única.'
+    }
+];
+
+// Crea las categorías que falten y devuelve un mapa { nombre -> _id }.
+const cargarCategorias = async () => {
+    const mapa = {};
+
+    for (const datos of CATEGORIAS) {
+        let categoria = await Categoria.findOne({ nombre: datos.nombre });
+        if (!categoria) {
+            categoria = await Categoria.create(datos);
         }
-    ]);
-    console.log('Estadios de ejemplo cargados');
+        mapa[categoria.nombre] = categoria._id;
+    }
+
+    return mapa;
 };
 
-export default seedProductos;
+// Crea los estadios que falten, enlazándolos con el _id real de su categoría.
+const cargarEstadios = async (mapaCategorias) => {
+    let creados = 0;
+
+    for (const datos of ESTADIOS) {
+        const existe = await Estadio.findOne({ nombre: datos.nombre });
+        if (existe) continue;
+
+        await Estadio.create({
+            ...datos,
+            categoria: mapaCategorias[datos.categoria]
+        });
+        creados++;
+    }
+
+    return creados;
+};
+
+// Crea el usuario administrador inicial usando las variables de entorno.
+const cargarAdmin = async () => {
+    const email = (process.env.ADMIN_EMAIL || '').trim().toLowerCase();
+    const password = process.env.ADMIN_PASSWORD;
+    const nombre = process.env.ADMIN_NAME || 'Administrador';
+
+    if (!email || !password) {
+        console.warn(
+            'Seed: no se creó el administrador (faltan ADMIN_EMAIL y ADMIN_PASSWORD en el .env)'
+        );
+        return false;
+    }
+
+    const existe = await Usuario.findOne({ email });
+    if (existe) return false;
+
+    await Usuario.create({
+        nombre,
+        email,
+        password: await bcrypt.hash(password, 10),
+        rol: 'admin'
+    });
+
+    console.log(`Seed: usuario administrador creado (${email})`);
+    return true;
+};
+
+export const cargarDatosIniciales = async () => {
+    try {
+        const mapaCategorias = await cargarCategorias();
+        const estadiosCreados = await cargarEstadios(mapaCategorias);
+        await cargarAdmin();
+
+        if (estadiosCreados > 0) {
+            console.log(`Seed: ${estadiosCreados} estadio(s) de ejemplo cargados`);
+        }
+    } catch (error) {
+        console.error('Seed: error al cargar los datos iniciales:', error.message);
+    }
+};
+
+export default cargarDatosIniciales;
