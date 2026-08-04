@@ -1,38 +1,71 @@
-import { useState, useEffect } from "react";
-import { getProductos } from "../services/api";
+import { useCallback } from "react";
+import { Link } from "react-router-dom";
+import { getEstadios } from "../services/estadioService";
+import { getCategorias } from "../services/categoriaService";
+import { useCargarDatos } from "../hooks/useCargarDatos";
 import TarjetaEstadio from "../components/TarjetaEstadio";
+import Loading from "../components/Loading";
+import ErrorMessage from "../components/ErrorMessage";
+import EmptyState from "../components/EmptyState";
 
+// Página de inicio del FrontOffice.
+// Trae las sedes y las categorías reales de la API (nada está escrito a mano).
 function Home() {
-  const [estadios, setEstadios] = useState([]);
-  const [cargando, setCargando] = useState(true);
-
-  // al montar el componente traigo las sedes del backend
-  useEffect(() => {
-    getProductos()
-      .then((data) => setEstadios(data))
-      .catch(() => setEstadios([]))
-      .finally(() => setCargando(false));
+  // Las dos consultas van juntas para no esperar una atrás de la otra.
+  const consulta = useCallback(async () => {
+    const [estadios, categorias] = await Promise.all([getEstadios(), getCategorias()]);
+    return { estadios, categorias };
   }, []);
+
+  const { datos, cargando, error, recargar } = useCargarDatos(consulta);
+
+  const estadios = datos?.estadios ?? [];
+  const categorias = datos?.categorias ?? [];
+
+  // El contador sale del largo real de la lista, con dos dígitos (04, 12...).
+  const cantidad = String(estadios.length).padStart(2, "0");
 
   return (
     <>
       <section className="hero">
         <span className="hero-kicker">FIFA World Cup 26 · Sedes oficiales · USA</span>
         <h1 className="hero-title">
-          Reservá los estadios más
+          Conocé los estadios más
           <br />
           <em>icónicos</em> del Mundial 2026
         </h1>
         <p className="hero-sub">
-          Una colección exclusiva de sedes legendarias. Exploralas, viví el detalle
-          y sumalas a tu experiencia mundialista.
+          Una colección exclusiva de sedes legendarias. Explorá cada estadio, mirá
+          su ficha completa y descubrí dónde se juega el próximo Mundial.
         </p>
         <div className="hero-cta">
-          <a href="#sedes" className="btn-primary">Explorar sedes</a>
-          <span className="hero-count">04 sedes disponibles</span>
+          <Link to="/estadios" className="btn-primary">Explorar sedes</Link>
+          <span className="hero-count">
+            {cargando ? "Cargando sedes..." : `${cantidad} sedes disponibles`}
+          </span>
         </div>
         <div className="hero-glow" aria-hidden="true"></div>
       </section>
+
+      {!cargando && !error && categorias.length > 0 && (
+        <section className="categorias-tira">
+          <h2 className="tira-titulo">Categorías de sede</h2>
+          <div className="tira-lista">
+            {categorias.map((categoria) => (
+              <Link
+                key={categoria._id}
+                to={`/estadios?categoria=${categoria._id}`}
+                className="tira-chip"
+              >
+                {categoria.nombre}
+                <span className="tira-chip-num">
+                  {estadios.filter((e) => e.categoria?._id === categoria._id).length}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="catalogo" id="sedes">
         <div className="catalogo-head">
@@ -40,11 +73,18 @@ function Home() {
           <p>Estados Unidos · Mundial 2026</p>
         </div>
 
-        {cargando ? (
-          <p className="cargando">Cargando sedes...</p>
-        ) : estadios.length === 0 ? (
-          <p className="cargando">No hay sedes para mostrar. ¿Está prendido el backend?</p>
-        ) : (
+        {cargando && <Loading texto="Cargando sedes..." />}
+
+        {!cargando && error && <ErrorMessage mensaje={error} onReintentar={recargar} />}
+
+        {!cargando && !error && estadios.length === 0 && (
+          <EmptyState
+            titulo="Todavía no hay sedes cargadas"
+            texto="Cuando un administrador cargue las sedes desde el panel, van a aparecer acá."
+          />
+        )}
+
+        {!cargando && !error && estadios.length > 0 && (
           <div className="grid">
             {estadios.map((estadio, i) => (
               <TarjetaEstadio key={estadio._id} estadio={estadio} index={i} />

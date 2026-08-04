@@ -1,11 +1,16 @@
 import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import Input from "../components/Input";
-import { registrarUsuario } from "../services/api";
+import { useAuth } from "../hooks/useAuth";
 
 function Register() {
   const [form, setForm] = useState({ nombre: "", email: "", password: "" });
   const [errores, setErrores] = useState({});
   const [mensaje, setMensaje] = useState(null);
+  const [enviando, setEnviando] = useState(false);
+
+  const { registrarse, iniciarSesion } = useAuth();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,34 +27,69 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // que no se recargue la página al enviar
-    setMensaje(null); // borro mensajes viejos
+    setMensaje(null);
 
-    const nuevos = validar(); // ¿hay errores?
+    const nuevos = validar();
     setErrores(nuevos);
     if (Object.keys(nuevos).length > 0) return;
 
-    const data = await registrarUsuario(form); // mando los datos a la API
-    if (data.error) {
-      setMensaje({ tipo: "error", texto: data.error });
-      return;
+    setEnviando(true);
+    try {
+      await registrarse(form);
+      // Después de crear la cuenta iniciamos sesión automáticamente.
+      await iniciarSesion(form.email, form.password);
+      navigate("/", { replace: true });
+    } catch (error) {
+      setMensaje({ tipo: "error", texto: error.message });
+    } finally {
+      setEnviando(false);
     }
-    setMensaje({ tipo: "ok", texto: `Cuenta creada para ${data.nombre} 🎉` });
-    setForm({ nombre: "", email: "", password: "" });
   };
 
   return (
     <section className="formulario">
       <h2>Registro</h2>
+
       <form onSubmit={handleSubmit} noValidate>
-        <Input label="Nombre" name="nombre" value={form.nombre} onChange={handleChange} error={errores.nombre} />
-        <Input label="Email" type="email" name="email" value={form.email} onChange={handleChange} error={errores.email} />
-        <Input label="Contraseña" type="password" name="password" value={form.password} onChange={handleChange} error={errores.password} />
-        <button type="submit">Crear cuenta</button>
+        <Input
+          label="Nombre"
+          name="nombre"
+          value={form.nombre}
+          onChange={handleChange}
+          error={errores.nombre}
+          autoComplete="name"
+        />
+        <Input
+          label="Email"
+          type="email"
+          name="email"
+          value={form.email}
+          onChange={handleChange}
+          error={errores.email}
+          autoComplete="email"
+        />
+        <Input
+          label="Contraseña"
+          type="password"
+          name="password"
+          value={form.password}
+          onChange={handleChange}
+          error={errores.password}
+          ayuda="Al menos 6 caracteres"
+          autoComplete="new-password"
+        />
+        <button type="submit" disabled={enviando}>
+          {enviando ? "Creando cuenta..." : "Crear cuenta"}
+        </button>
       </form>
 
       {mensaje && (
         <p className={mensaje.tipo === "ok" ? "aviso ok" : "aviso error"}>{mensaje.texto}</p>
       )}
+
+      <p className="formulario-pie">
+        ¿Ya tenés cuenta? <Link to="/login">Iniciá sesión</Link>
+      </p>
     </section>
   );
 }

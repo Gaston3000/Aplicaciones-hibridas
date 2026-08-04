@@ -1,28 +1,38 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { formatearPrecio } from "../utils/formato";
 
 // Tarjeta de una sede (estadio). Recibe el estadio por props.
+// La categoría llega populada desde la API, por eso se usa categoria.nombre.
 function TarjetaEstadio({ estadio, index = 0 }) {
   const [sinFoto, setSinFoto] = useState(false);
 
+  const enlace = `/estadios/${estadio._id}`;
+  const nombreCategoria = estadio.categoria?.nombre || "Sin categoría";
+
   return (
     <article className="card" style={{ animationDelay: `${index * 90}ms` }}>
-      <Link to={`/producto/${estadio._id}`} className="card-media">
-        {!sinFoto && (
+      <Link to={enlace} className="card-media">
+        {estadio.imagen && !sinFoto && (
           <img src={estadio.imagen} alt={estadio.nombre} onError={() => setSinFoto(true)} />
         )}
-        {sinFoto && <span className="card-media-fallback">{estadio.nombre}</span>}
-        <span className="card-badge">{estadio.categoria}</span>
+        {(!estadio.imagen || sinFoto) && (
+          <span className="card-media-fallback">{estadio.nombre}</span>
+        )}
+        <span className="card-badge">{nombreCategoria}</span>
       </Link>
 
       <div className="card-body">
-        <span className="card-city">{estadio.marca}</span>
+        <span className="card-city">
+          {estadio.ciudad}
+          {estadio.estado ? `, ${estadio.estado}` : ""}
+        </span>
         <h3 className="card-title">{estadio.nombre}</h3>
         <p className="card-desc">{estadio.descripcion}</p>
 
         <div className="card-foot">
-          <span className="card-price">${estadio.precio.toLocaleString("es-AR")}</span>
-          <Link to={`/producto/${estadio._id}`} className="btn-add">Ver</Link>
+          <span className="card-price">{formatearPrecio(estadio.precio)}</span>
+          <Link to={enlace} className="btn-add">Ver sede</Link>
         </div>
       </div>
     </article>

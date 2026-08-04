@@ -19,7 +19,7 @@ const CATEGORIAS = [
 const ESTADIOS = [
     {
         nombre: 'New York New Jersey Stadium',
-        ciudad: 'Nueva York / Nueva Jersey',
+        ciudad: 'East Rutherford',
         estado: 'Nueva Jersey',
         categoria: 'Sede de la Final',
         precio: 1250000000,
