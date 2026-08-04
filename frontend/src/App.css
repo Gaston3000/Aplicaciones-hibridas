@@ -165,15 +165,22 @@
 .btn-primary.ok {
   background: linear-gradient(135deg, #7afcb6, var(--green));
 }
+/* Se usa tanto en <a> como en <button>. El "background: transparent" y la
+   tipografía son necesarios porque el navegador le pone a los <button> un
+   fondo gris claro y su propia fuente por defecto. */
 .btn-ghost {
   display: inline-block;
   padding: 12px 24px;
+  font-family: var(--font-body);
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.5px;
   color: var(--text);
+  background: transparent;
   border: 1px solid var(--line);
   border-radius: 999px;
-  transition: border-color 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
 }
 .btn-ghost:hover {
   border-color: var(--green);
