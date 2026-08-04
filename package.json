@@ -1,15 +1,18 @@
 {
-  "name": "limpieza-total",
+  "name": "world-cup-26-sedes",
   "version": "1.0.0",
   "private": true,
-  "description": "Tienda de productos de limpieza. Backend con Express + MongoDB + JWT y frontend con React.",
+  "description": "Plataforma de consulta y administracion de las sedes del Mundial 2026. Backend Express + MongoDB + JWT y frontend React.",
   "scripts": {
     "setup": "npm install && npm install --prefix backend && npm install --prefix frontend",
-    "start": "concurrently -n backend,frontend -c blue,green \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\""
+    "start": "concurrently -n backend,frontend -c blue,green \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\"",
+    "lint": "npm run lint --prefix frontend",
+    "build": "npm run build --prefix frontend",
+    "test:api": "npm run test:api --prefix backend"
   },
   "devDependencies": {
     "concurrently": "^9.1.0"
   },
-  "author": "Gaston",
+  "author": "Gaston Costabella",
   "license": "ISC"
 }

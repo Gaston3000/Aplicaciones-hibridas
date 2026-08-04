@@ -1,85 +1,62 @@
-# Semana 06 — API con MongoDB, Usuarios y JWT
+# Backend — API World Cup 26
 
-API REST de productos de limpieza. Continúa el servidor MVC de la Semana 05, pero ahora con
-persistencia real en **MongoDB** (Mongoose), una entidad **usuarios** con registro/login,
-contraseñas encriptadas con **bcrypt** y autenticación con **JSON Web Token**.
+API REST de las sedes del Mundial 2026: Express + MongoDB (Mongoose) + JWT.
+La documentación completa del proyecto está en el [README principal](../README.md).
 
-## Nombre de la API
+## Comandos
 
-**API Limpieza Total**
+```bash
+npm install        # instalar dependencias
+npm start          # levantar la API (http://localhost:3000)
+npm run dev        # igual, pero reiniciando ante cada cambio
+npm run test:api   # pruebas de la API (necesita el servidor corriendo)
+```
 
-## Descripción
+## Variables de entorno
 
-Permite registrar usuarios e iniciar sesión, y gestionar productos y categorías de limpieza.
-La lectura de productos y categorías es pública; la creación, edición y borrado están protegidas
-con un token JWT que se obtiene al hacer login. En la ruta raíz `/` se sirve una página estática
-con la información de la API.
+Copiar `.env.example` como `.env` y completar. Las importantes:
 
-## Estructura
+- `MONGO_URI` — si se deja vacía en desarrollo, se levanta una base en memoria.
+  En producción es obligatoria.
+- `JWT_SECRET` — clave para firmar los tokens. En producción es obligatoria.
+- `FRONTEND_URL` — orígenes permitidos por CORS (separados por coma).
+- `ADMIN_EMAIL` y `ADMIN_PASSWORD` — administrador que crea el seed la primera vez.
+
+## Organización
 
 ```
-Semana-06/
-├── package.json
-├── .env.example
-├── public/
-│   └── index.html            # info de la API (ruta /)
-└── src/
-    ├── index.js              # servidor + conexión a Mongo
-    ├── seed.js               # carga productos de ejemplo la 1ra vez
-    ├── config/
-    │   └── db.js             # conexión Mongoose
-    ├── models/
-    │   ├── usuarioModel.js
-    │   ├── productoModel.js
-    │   └── categoriaModel.js
-    ├── controllers/
-    │   ├── usuarioController.js
-    │   ├── productoController.js
-    │   └── categoriaController.js
-    ├── middlewares/
-    │   └── auth.js           # valida el token JWT
-    └── routes/
-        ├── usuarioRoutes.js
-        ├── productoRoutes.js
-        └── categoriaRoutes.js
+src/
+├── index.js              servidor, CORS y orden de los middlewares
+├── seed.js               datos iniciales (idempotente)
+├── config/db.js          conexión a MongoDB
+├── models/               esquemas de Mongoose (Usuario, Estadio, Categoria)
+├── controllers/          lógica de cada recurso
+├── middlewares/
+│   ├── auth.js           verificarToken y soloAdmin
+│   └── errorHandler.js   404 y manejo central de errores
+└── routes/               definición de las URI
 ```
 
 ## Endpoints
 
-### Usuarios — `/api/usuarios`
-| Método | Ruta | Acción |
-|--------|------|--------|
-| POST | `/registro` | Crear usuario (`{ nombre, email, password }`) |
-| POST | `/login` | Iniciar sesión (`{ email, password }`) → devuelve `token` |
-| GET | `/` | Listar usuarios (requiere token) |
+| Recurso | Lectura | Escritura |
+|---------|---------|-----------|
+| `/api/estadios` | Pública | Solo admin |
+| `/api/categorias` | Pública | Solo admin |
+| `/api/usuarios` | Solo admin | Solo admin |
 
-### Productos — `/api/productos`
-| Método | Ruta | Acción |
-|--------|------|--------|
-| GET | `/` | Listar todos |
-| GET | `/:id` | Obtener uno |
-| POST | `/` | Crear (requiere token) |
-| PUT | `/:id` | Actualizar (requiere token) |
-| DELETE | `/:id` | Eliminar (requiere token) |
+`POST /api/usuarios/registro` y `POST /api/usuarios/login` son públicos.
+`GET /api/usuarios/perfil` necesita token.
 
-### Categorías — `/api/categorias`
-| Método | Ruta | Acción |
-|--------|------|--------|
-| GET | `/` | Listar todas |
-| POST | `/` | Crear (requiere token) |
-| DELETE | `/:id` | Eliminar (requiere token) |
+El detalle completo de cada endpoint está en el README principal y también se ve
+en la página informativa que sirve la API en la ruta `/`.
 
-## Cómo correr
+## Detalles de seguridad
 
-```bash
-npm install
-cp .env.example .env     # completar MONGO_URI y JWT_SECRET
-npm start
-```
-
-Necesita una instancia de MongoDB corriendo (local o Atlas). La primera vez se cargan algunos
-productos de ejemplo para poder probar los GET.
-
-## Integrantes
-
-- Gastón Costabella
+- Las contraseñas se guardan hasheadas con **bcrypt** (10 rondas).
+- El campo `password` tiene `select: false`: nunca sale en las consultas.
+  Para el login se pide explícitamente con `.select('+password')`.
+- El registro público siempre crea usuarios con rol `usuario`; el rol `admin`
+  solo se puede asignar desde el BackOffice.
+- El token incluye únicamente `{ id, email, rol }`.
+- Siempre tiene que quedar al menos un administrador en el sistema.

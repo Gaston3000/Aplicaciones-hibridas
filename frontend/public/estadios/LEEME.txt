@@ -1,8 +1,0 @@
-Poné acá las 4 fotos de los estadios, con estos nombres exactos:
-
-    new-york.jpg
-    dallas.jpg
-    los-angeles.jpg
-    miami.jpg
-
-(ver frontend/public/LEEME-IMAGENES.txt para más detalle)
